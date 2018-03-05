@@ -95,7 +95,7 @@ public class Users extends AppCompatActivity{
 
     }
 
-    //Retreives all users from Firebase database and stores in ArrayList
+    //Retrieves all users from Firebase database and stores in ArrayList
     public void doOnSuccess(String s)
     {
         try{
