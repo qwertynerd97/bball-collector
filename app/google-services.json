@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "340736866080",
+    "firebase_url": "https://baseballmessenger-afdea.firebaseio.com",
+    "project_id": "baseballmessenger-afdea",
+    "storage_bucket": "baseballmessenger-afdea.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:340736866080:android:a13d7b0c1c6c50c6",
+        "android_client_info": {
+          "package_name": "com.example.app.baseballmessenger"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "340736866080-6jatm5ki8rec0hlujng29ncan7sqgfp3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDudp3S9OAQqyQYMLBRzoZGukacJjaUfFA"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
