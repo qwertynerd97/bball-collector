@@ -1,12 +1,11 @@
 package com.example.app.baseballmessenger;
 
-import android.app.ProgressDialog;
 import android.content.Intent;
-import android.nfc.Tag;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -24,15 +23,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-import org.w3c.dom.Text;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
+import com.google.firebase.auth.FirebaseUser;
 
 /**
  * Created by pr4h6n on 2/25/18.
@@ -67,6 +58,8 @@ public class Register extends AppCompatActivity {
             }
         });
 
+        final SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+
         //Creates registration for new user and signs them in automatically
         registerButton.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -95,33 +88,13 @@ public class Register extends AppCompatActivity {
                                     if (task.isSuccessful())
                                     {
                                         // Sign in success, update UI with the signed-in user's information
-                                        UserDetails.currentUser = mAuth.getCurrentUser();
-
-                                    String url = "https://baseballmessenger-afdea.firebaseio.com/users.json";
-
-                                    //Stores the new user's data in /users directory
-                                    StringRequest request = new StringRequest(Request.Method.GET, url, new Response.Listener<String>(){
-                                        @Override
-                                        public void onResponse(String s)
-                                        {
-                                            Firebase reference = new Firebase("https://baseballmessenger-afdea.firebaseio.com/users/" + UserDetails.currentUser.getUid());
-                                            reference.child("cards").setValue("");
-                                            reference.child("wishlist").setValue("");
-                                            reference.child("email").setValue(email);
-
-                                            Toast.makeText(Register.this, "Registration successful", Toast.LENGTH_LONG).show();
-                                            startActivity(new Intent(Register.this, Users.class));
-                                        }
-                                    }, new Response.ErrorListener(){
-                                        @Override
-                                        public void onErrorResponse(VolleyError volleyError)
-                                        {
-                                            System.out.println("" + volleyError);
-                                        }
-                                    });
-
-                                    RequestQueue rQueue = Volley.newRequestQueue(Register.this);
-                                    rQueue.add(request);
+                                        FirebaseUser currentUser = mAuth.getCurrentUser();
+                                        User newUser = new User(currentUser.getUid(),"",currentUser.getEmail(),0,0,0);
+                                        newUser.updateFirebase();
+                                        Handoff.currentUser = newUser;
+                                        sharedPref.edit().putString("user_email",email).putString("user_password",pass).apply();
+                                        Toast.makeText(Register.this, "Registration successful", Toast.LENGTH_LONG).show();
+                                        startActivity(new Intent(Register.this, SearchUsersActivity.class));
 
                                     } else {
                                         // If sign in fails, display a message to the user.

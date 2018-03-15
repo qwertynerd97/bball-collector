@@ -17,7 +17,6 @@ import com.android.volley.toolbox.Volley;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -31,7 +30,7 @@ import java.util.Map;
  * Created by pr4h6n on 2/27/18.
  */
 
-public class Trade extends AppCompatActivity {
+public class SingleTradeActivity extends AppCompatActivity {
 
     ListView cardsReceivedList;
     ListView cardsSentList;
@@ -85,7 +84,7 @@ public class Trade extends AppCompatActivity {
             }
         });
 
-        RequestQueue rQueue = Volley.newRequestQueue(Trade.this);
+        RequestQueue rQueue = Volley.newRequestQueue(SingleTradeActivity.this);
         rQueue.add(request);
 
         acceptButton.setOnClickListener(new View.OnClickListener(){
@@ -188,7 +187,7 @@ public class Trade extends AppCompatActivity {
                                         @Override
                                         public void onComplete(FirebaseError firebaseError, Firebase firebase) {
                                             syncFirebaseWithDatabase(); //TODO Eliminate local database for Firebase cloud storage
-                                            startActivity(new Intent(Trade.this, Trades.class));
+                                            startActivity(new Intent(SingleTradeActivity.this, Trades.class));
                                         }
                                     });
                                 }
@@ -208,7 +207,7 @@ public class Trade extends AppCompatActivity {
                     }
                 });
 
-                RequestQueue rQueue = Volley.newRequestQueue(Trade.this);
+                RequestQueue rQueue = Volley.newRequestQueue(SingleTradeActivity.this);
                 rQueue.add(request);
             }
         });
@@ -280,7 +279,7 @@ public class Trade extends AppCompatActivity {
                                         @Override
                                         public void onComplete(FirebaseError firebaseError, Firebase firebase) {
                                             syncFirebaseWithDatabase(); //TODO Eliminate local database for Firebase cloud storage
-                                            startActivity(new Intent(Trade.this, Trades.class));
+                                            startActivity(new Intent(SingleTradeActivity.this, Trades.class));
                                         }
                                     });
 
@@ -301,7 +300,7 @@ public class Trade extends AppCompatActivity {
                     }
                 });
 
-                RequestQueue rQueue = Volley.newRequestQueue(Trade.this);
+                RequestQueue rQueue = Volley.newRequestQueue(SingleTradeActivity.this);
                 rQueue.add(request);
 
             }

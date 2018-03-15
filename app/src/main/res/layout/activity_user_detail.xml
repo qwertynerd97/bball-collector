@@ -29,18 +29,7 @@
 
         </android.support.design.widget.AppBarLayout>
 
-        <GridView xmlns:android="http://schemas.android.com/apk/res/android"
-            android:id="@+id/user_scroll"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:columnWidth="120dp"
-            android:numColumns="auto_fit"
-            android:verticalSpacing="10dp"
-            android:horizontalSpacing="10dp"
-            android:stretchMode="columnWidth"
-            android:gravity="center"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
-
+        <include layout="@layout/content_user_detail" />
     </android.support.design.widget.CoordinatorLayout>
 
     <android.support.design.widget.NavigationView

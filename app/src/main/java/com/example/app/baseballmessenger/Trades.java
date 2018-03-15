@@ -21,7 +21,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Iterator;
 
 /**
@@ -70,7 +69,7 @@ public class Trades extends AppCompatActivity {
                 //Store trade information for future use
                 UserDetails.tradeWith = UserDetails.hashMap.get(al.get(position).substring(11, al.get(position).indexOf(" #")));
                 UserDetails.tradeNumber = al.get(position).substring(al.get(position).indexOf(" #")+2);
-                startActivity(new Intent(Trades.this, Trade.class));
+                startActivity(new Intent(Trades.this, SingleTradeActivity.class));
             }
         });
 
@@ -135,7 +134,7 @@ public class Trades extends AppCompatActivity {
                                 }
                             }
 
-                            al.add("Trade with " + otherUserEmail + " #" + tradeNumber);
+                            al.add("SingleTradeActivity with " + otherUserEmail + " #" + tradeNumber);
                         }
                     }
                 }

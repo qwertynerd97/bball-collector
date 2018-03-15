@@ -26,7 +26,7 @@ import java.util.Map;
  * Created by pr4h6n on 2/25/18.
  */
 
-public class Chat extends AppCompatActivity{
+public class SingleChatActivity extends AppCompatActivity{
     LinearLayout layout;
     RelativeLayout layout_two;
     ImageView sendButton;
@@ -86,11 +86,11 @@ public class Chat extends AppCompatActivity{
 
                 if(email.equals(UserDetails.currentUser.getEmail()))
                 {
-                    addMessageBox("You\n" + message, 1);
+                    //addMessageBox("You\n" + message, 1);
                 }
                 else
                 {
-                    addMessageBox(email + "\n" + message, 2);
+                    //addMessageBox(email + "\n" + message, 2);
                 }
             }
 
@@ -120,7 +120,7 @@ public class Chat extends AppCompatActivity{
     @RequiresApi(api = Build.VERSION_CODES.M)
     public void addMessageBox(String message, int type)
     {
-        TextView textView = new TextView(Chat.this);
+        TextView textView = new TextView(SingleChatActivity.this);
         textView.setText(message);
         textView.setTextAppearance(R.style.fontForTextMessage);
 

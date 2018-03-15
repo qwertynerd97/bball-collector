@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.app.baseballmessenger">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -16,20 +18,27 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Register"/>
-        <activity android:name=".Users"/>
-        <activity android:name=".Chat"/>
-        <activity android:name=".Trades"/>
-        <activity android:name=".Trade"/>
-        <activity android:name=".NewTrade"/>
-        <activity android:name=".SelectCards"/>
-        <activity android:name=".SelectUser"/>
+        <activity android:name=".Register" />
+        <activity android:name=".SearchUsersActivity" />
+        <activity android:name=".SingleChatActivity" />
+        <activity android:name=".Trades" />
+        <activity android:name=".SingleTradeActivity" />
+        <activity android:name=".NewTrade" />
+        <activity android:name=".SelectCards" />
+        <activity android:name=".SelectUser" />
 
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
-    </application>
 
-    <uses-permission android:name="android.permission.INTERNET"/>
+        <activity
+            android:name=".DrawerActivity"
+            android:label="@string/title_activity_menu"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name=".UserDetailActivity"
+            android:label="@string/title_activity_user_detail"
+            android:theme="@style/AppTheme"></activity>
+    </application>
 
 </manifest>
