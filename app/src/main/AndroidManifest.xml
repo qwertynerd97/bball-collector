@@ -38,6 +38,10 @@
         <activity
             android:name=".UserDetailActivity"
             android:label="@string/title_activity_user_detail"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name=".WishlistActivity"
+            android:label="@string/title_activity_wishlist"
             android:theme="@style/AppTheme"></activity>
     </application>
 

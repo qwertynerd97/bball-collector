@@ -95,7 +95,7 @@ public class Login extends AppCompatActivity {
                                     {
                                         Log.d("Error Result","Auth sucessful");
                                         sharedPref.edit().putString("user_email",email).putString("user_password",pass).apply();
-                                        FirebaseDatabase.getInstance().getReference("users").addListenerForSingleValueEvent(new ValueEventListener() {
+                                        FirebaseDatabase.getInstance().getReference("users").child(mAuth.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
                                             @Override
                                             public void onDataChange(DataSnapshot snapshot) {
                                                 Handoff.currentUser = snapshot.getValue(User.class);
@@ -120,7 +120,6 @@ public class Login extends AppCompatActivity {
         });
 
         // Auto-Login
-        /*
         String mail = sharedPref.getString("user_email", "dummyuser@gmail.com");
         String password = sharedPref.getString("user_password", "areallydummypassword");
 
@@ -132,16 +131,17 @@ public class Login extends AppCompatActivity {
                             Log.d("Error Result", "Tried to auth");
                             if (task.isSuccessful()) {
                                 Log.d("Error Result", "Auth sucessful");
-                                FirebaseDatabase.getInstance().getReference("users").addListenerForSingleValueEvent(new ValueEventListener() {
-                                            @Override
-                                            public void onDataChange(DataSnapshot snapshot) {
-                                                Handoff.currentUser = snapshot.getValue(User.class);
-                                            }
-                                            @Override
-                                            public void onCancelled(DatabaseError firebaseError) {
+                                FirebaseDatabase.getInstance().getReference("users").child(mAuth.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(DataSnapshot snapshot) {
+                                        Handoff.currentUser = snapshot.getValue(User.class);
+                                    }
 
-                                            }
-                                        });
+                                    @Override
+                                    public void onCancelled(DatabaseError firebaseError) {
+
+                                    }
+                                });
                                 UserDetails.currentUser = mAuth.getCurrentUser(); //Store current user data (Uid, email address, etc.)
                                 startActivity(new Intent(Login.this, SearchUsersActivity.class));
                             } else {
@@ -152,8 +152,6 @@ public class Login extends AppCompatActivity {
                         }
                     });
         }
-        */
-
     }
 }
 

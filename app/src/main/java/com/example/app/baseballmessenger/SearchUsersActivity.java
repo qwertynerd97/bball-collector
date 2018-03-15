@@ -88,12 +88,13 @@ public class SearchUsersActivity extends AppCompatActivity implements Navigation
         userScroll.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View v,
                                     int position, long id) {
-                Toast.makeText(SearchUsersActivity.this, "" + position,
-                        Toast.LENGTH_SHORT).show();
+                Intent i=new Intent(SearchUsersActivity.this,UserDetailActivity.class);
+                i.putExtra("user", users.get(position));
+                startActivity(i);
             }
         });
 
-        // Set up list of users
+        // Set up list of Users
         users = new ArrayList<User>();
 
         // Set up Firebase
@@ -178,7 +179,7 @@ public class SearchUsersActivity extends AppCompatActivity implements Navigation
         if (id == R.id.nav_collection) {
             startActivity(new Intent(SearchUsersActivity.this, NewTrade.class));
         } else if (id == R.id.nav_wishlist) {
-            startActivity(new Intent(SearchUsersActivity.this, NewTrade.class));
+            startActivity(new Intent(SearchUsersActivity.this, WishlistActivity.class));
         } else if (id == R.id.nav_profile) {
             Intent i=new Intent(this,UserDetailActivity.class);
             i.putExtra("user", Handoff.currentUser);

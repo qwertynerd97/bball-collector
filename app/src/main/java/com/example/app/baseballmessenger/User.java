@@ -29,7 +29,6 @@ public class User implements Parcelable {
     public int numCollection;
     public int numWishlist;
     private Image profileImage;
-    private DatabaseReference reference;
 
     public static final Parcelable.Creator<User> CREATOR= new Parcelable.Creator<User>() {
 
@@ -50,7 +49,6 @@ public class User implements Parcelable {
      */
     public User(){
         // Default constructor required for calls to DataSnapshot.getValue(User.class)
-        reference = FirebaseDatabase.getInstance().getReference();
     }
 
     /**
@@ -58,8 +56,6 @@ public class User implements Parcelable {
      * @param in The Android Parcel to build the user
      */
     public User(Parcel in){
-        reference = FirebaseDatabase.getInstance().getReference();
-
         String[] data= new String[6];
         in.readStringArray(data);
 
@@ -81,8 +77,6 @@ public class User implements Parcelable {
      * @param wish The number of cards in the user's wishlist
      */
     public User(String u, String name, String mail, double val, int coll, int wish){
-        reference = FirebaseDatabase.getInstance().getReference();
-
         uuid = u;
         displayName = name;
         email = mail;
@@ -95,6 +89,7 @@ public class User implements Parcelable {
      * Updates the realtime database with the values for this user
      */
     public void updateFirebase(){
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
         reference.child("users").child(uuid).setValue(this);
     }
 
@@ -115,5 +110,10 @@ public class User implements Parcelable {
         data[5] = numWishlist + "";
 
         dest.writeStringArray(data);
+    }
+
+    @Override
+    public String toString(){
+        return uuid + ":" + displayName;
     }
 }

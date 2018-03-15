@@ -1,7 +1,9 @@
 package com.example.app.baseballmessenger;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
@@ -10,6 +12,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -27,24 +30,56 @@ public class UserDetailActivity extends AppCompatActivity implements NavigationV
         setSupportActionBar(toolbar);
 
         Button collectionButton = findViewById(R.id.collectionButton);
+        collectionButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
         Button wishlistButton = findViewById(R.id.wishlistButton);
+        wishlistButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
         Button chatButton = findViewById(R.id.chatButton);
+        chatButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
         Button logoutButton = findViewById(R.id.logoutButton);
+        logoutButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Erase saved login
+                SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(UserDetailActivity.this);
+                sharedPref.edit().putString("user_email","dummyuser@gmail.com").putString("user_password","").apply();
+
+                // Go to login page
+                startActivity(new Intent(UserDetailActivity.this, Login.class));
+            }
+        });
 
         data = getIntent().getParcelableExtra("user");
 
-        // Set up visibility for current user vs other users
-        //if(data.uuid.equals("0")){
+        Log.d("User Detail",data.toString());
+        Log.d("User Detail",Handoff.currentUser.toString());
+
+        // Set up visibility for current user vs other cards
+        if(data.uuid.equals(Handoff.currentUser.uuid)){
             collectionButton.setVisibility(View.GONE);
             wishlistButton.setVisibility(View.GONE);
             chatButton.setVisibility(View.GONE);
             logoutButton.setVisibility(View.VISIBLE);
-        /*}else{
+        }else{
             collectionButton.setVisibility(View.VISIBLE);
             wishlistButton.setVisibility(View.VISIBLE);
             chatButton.setVisibility(View.VISIBLE);
             logoutButton.setVisibility(View.GONE);
-        }*/
+        }
 
         TextView userName = findViewById(R.id.userName);
         userName.setText(data.email);
@@ -75,7 +110,7 @@ public class UserDetailActivity extends AppCompatActivity implements NavigationV
         if (id == R.id.nav_collection) {
             startActivity(new Intent(this, NewTrade.class));
         } else if (id == R.id.nav_wishlist) {
-            startActivity(new Intent(this, NewTrade.class));
+            startActivity(new Intent(this, WishlistActivity.class));
         } else if (id == R.id.nav_profile) {
             Intent i=new Intent(this,UserDetailActivity.class);
             i.putExtra("user", Handoff.currentUser);

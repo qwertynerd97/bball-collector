@@ -185,7 +185,7 @@ public class NewTrade extends AppCompatActivity {
     //TODO Eliminate local database for Firebase cloud storage
     public void syncFirebaseWithDatabase()
     {
-        Firebase reference = new Firebase("https://baseballmessenger-afdea.firebaseio.com/users/" + UserDetails.currentUser.getUid());
+        Firebase reference = new Firebase("https://baseballmessenger-afdea.firebaseio.com/cards/" + UserDetails.currentUser.getUid());
 
         Map<String, Object> newCard = new HashMap<>();
         List<Card> receivedCards = UserDetails.db.cardDAO().getAll();
