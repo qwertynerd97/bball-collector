@@ -47,7 +47,7 @@ public class UserDetailActivity extends AppCompatActivity implements NavigationV
         }*/
 
         TextView userName = findViewById(R.id.userName);
-        userName.setText(data.displayName);
+        userName.setText(data.email);
         TextView value = findViewById(R.id.value);
         value.setText(data.value + "");
         TextView collectionCards = findViewById(R.id.collection);
