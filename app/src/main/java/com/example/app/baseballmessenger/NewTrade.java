@@ -172,7 +172,7 @@ public class NewTrade extends AppCompatActivity {
                     @Override
                     public void onComplete(FirebaseError firebaseError, Firebase firebase) {
                         syncFirebaseWithDatabase(); //TODO Eliminate local database for Firebase cloud storage
-                        startActivity(new Intent(NewTrade.this, Trades.class));
+                        startActivity(new Intent(NewTrade.this, TradeListActivity.class));
                     }
                 });
             }

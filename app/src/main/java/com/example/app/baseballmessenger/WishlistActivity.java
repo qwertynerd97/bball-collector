@@ -27,7 +27,7 @@ import com.google.firebase.database.Query;
 
 import java.util.ArrayList;
 
-public class WishlistActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class WishlistActivity extends AppCompatActivity{
     private DrawerLayout drawer;
     private Toolbar toolbar;
     private GridView cardScroll;
@@ -40,19 +40,6 @@ public class WishlistActivity extends AppCompatActivity implements NavigationVie
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_wishlist);
-
-        // Set up toolbar and drawer
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-
-        drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.addDrawerListener(toggle);
-        toggle.syncState();
-
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
 
         // Set up pretty user scroll
         cardScroll = (GridView) findViewById(R.id.user_scroll);
@@ -117,32 +104,19 @@ public class WishlistActivity extends AppCompatActivity implements NavigationVie
 
         adapter = new CardAdapter(this, R.layout.card_thumbnail);
         cardScroll.setAdapter(adapter);
-    }
 
-    @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
-        // Handle navigation view item clicks here.
-        int id = item.getItemId();
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
 
-        if (id == R.id.nav_collection) {
-            startActivity(new Intent(WishlistActivity.this, NewTrade.class));
-        } else if (id == R.id.nav_wishlist) {
-            startActivity(new Intent(WishlistActivity.this, WishlistActivity.class));
-        } else if (id == R.id.nav_profile) {
-            Intent i=new Intent(WishlistActivity.this,UserDetailActivity.class);
-            i.putExtra("user", Handoff.currentUser);
-            startActivity(i);
-        } else if (id == R.id.nav_chat) {
-            startActivity(new Intent(WishlistActivity.this, NewTrade.class));
-        } else if (id == R.id.nav_users) {
-            startActivity(new Intent(WishlistActivity.this, SearchUsersActivity.class));
-        } else if (id == R.id.nav_trade) {
-            startActivity(new Intent(WishlistActivity.this, NewTrade.class));
-        }
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawer.addDrawerListener(toggle);
+        toggle.syncState();
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);
-        return true;
+        DrawerListener listen = new DrawerListener(this, drawer);
+        NavigationView navigationView = findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(listen);
     }
 
 }

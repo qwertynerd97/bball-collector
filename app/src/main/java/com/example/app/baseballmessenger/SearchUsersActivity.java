@@ -54,7 +54,7 @@ import static com.example.app.baseballmessenger.UserDetails.db;
  * Created by pr4h6n on 2/25/18.
  */
 
-public class SearchUsersActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class SearchUsersActivity extends AppCompatActivity{
     private DrawerLayout drawer;
     private Toolbar toolbar;
     private GridView userScroll;
@@ -73,14 +73,16 @@ public class SearchUsersActivity extends AppCompatActivity implements Navigation
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        // Set up drawer
+        drawer = findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
+        DrawerListener listen = new DrawerListener(this, drawer);
+        NavigationView navigationView = findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(listen);
 
         // Set up pretty user scroll
         userScroll = (GridView) findViewById(R.id.user_scroll);
@@ -138,30 +140,5 @@ public class SearchUsersActivity extends AppCompatActivity implements Navigation
         userScroll.setAdapter(adapter);
     }
 
-    @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
-        // Handle navigation view item clicks here.
-        int id = item.getItemId();
-
-        if (id == R.id.nav_collection) {
-            startActivity(new Intent(SearchUsersActivity.this, NewTrade.class));
-        } else if (id == R.id.nav_wishlist) {
-            startActivity(new Intent(SearchUsersActivity.this, WishlistActivity.class));
-        } else if (id == R.id.nav_profile) {
-            Intent i=new Intent(this,UserDetailActivity.class);
-            i.putExtra("user", Handoff.currentUser);
-            startActivity(i);
-        } else if (id == R.id.nav_chat) {
-            startActivity(new Intent(SearchUsersActivity.this, NewTrade.class));
-        } else if (id == R.id.nav_users) {
-            startActivity(new Intent(SearchUsersActivity.this, SearchUsersActivity.class));
-        } else if (id == R.id.nav_trade) {
-            startActivity(new Intent(SearchUsersActivity.this, NewTrade.class));
-        }
-
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);
-        return true;
-    }
 
 }

@@ -4,9 +4,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
-import android.support.design.widget.Snackbar;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -18,7 +16,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-public class UserDetailActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class UserDetailActivity extends AppCompatActivity {
     private User data;
     private DrawerLayout drawer;
 
@@ -47,7 +45,18 @@ public class UserDetailActivity extends AppCompatActivity implements NavigationV
         chatButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Intent i=new Intent(UserDetailActivity.this,SingleChatActivity.class);
+                i.putExtra("chattingWith", data);
+                startActivity(i);
+            }
+        });
+        Button tradeButton = findViewById(R.id.tradeButton);
+        tradeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i=new Intent(UserDetailActivity.this,SingleTradeActivity.class);
+                i.putExtra("tradingWith", data);
+                startActivity(i);
             }
         });
         Button logoutButton = findViewById(R.id.logoutButton);
@@ -59,7 +68,7 @@ public class UserDetailActivity extends AppCompatActivity implements NavigationV
                 sharedPref.edit().putString("user_email","dummyuser@gmail.com").putString("user_password","").apply();
 
                 // Go to login page
-                startActivity(new Intent(UserDetailActivity.this, Login.class));
+                startActivity(new Intent(UserDetailActivity.this, LoginActivity.class));
             }
         });
 
@@ -73,11 +82,13 @@ public class UserDetailActivity extends AppCompatActivity implements NavigationV
             collectionButton.setVisibility(View.GONE);
             wishlistButton.setVisibility(View.GONE);
             chatButton.setVisibility(View.GONE);
+            tradeButton.setVisibility(View.GONE);
             logoutButton.setVisibility(View.VISIBLE);
         }else{
             collectionButton.setVisibility(View.VISIBLE);
             wishlistButton.setVisibility(View.VISIBLE);
             chatButton.setVisibility(View.VISIBLE);
+            tradeButton.setVisibility(View.VISIBLE);
             logoutButton.setVisibility(View.GONE);
         }
 
@@ -97,34 +108,8 @@ public class UserDetailActivity extends AppCompatActivity implements NavigationV
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
+        DrawerListener listen = new DrawerListener(this, drawer);
         NavigationView navigationView = findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
-    }
-
-
-    @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
-        // Handle navigation view item clicks here.
-        int id = item.getItemId();
-
-        if (id == R.id.nav_collection) {
-            startActivity(new Intent(this, NewTrade.class));
-        } else if (id == R.id.nav_wishlist) {
-            startActivity(new Intent(this, WishlistActivity.class));
-        } else if (id == R.id.nav_profile) {
-            Intent i=new Intent(this,UserDetailActivity.class);
-            i.putExtra("user", Handoff.currentUser);
-            startActivity(i);
-        } else if (id == R.id.nav_chat) {
-            startActivity(new Intent(this, NewTrade.class));
-        } else if (id == R.id.nav_users) {
-            startActivity(new Intent(this, SearchUsersActivity.class));
-        } else if (id == R.id.nav_trade) {
-            startActivity(new Intent(this, NewTrade.class));
-        }
-
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);
-        return true;
+        navigationView.setNavigationItemSelectedListener(listen);
     }
 }

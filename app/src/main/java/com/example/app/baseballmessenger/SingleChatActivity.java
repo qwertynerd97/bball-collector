@@ -1,11 +1,15 @@
 package com.example.app.baseballmessenger;
 
-import android.os.Build;
+import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.RequiresApi;
+import android.support.design.widget.NavigationView;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
+import android.support.v7.widget.Toolbar;
 import android.view.Gravity;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
@@ -23,9 +27,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 
-import java.util.HashMap;
-import java.util.Map;
-
 /**
  * Created by pr4h6n on 2/25/18.
  */
@@ -41,12 +42,15 @@ public class SingleChatActivity extends AppCompatActivity{
     private User currentUser;
     private User chattingWith;
     private String chat;
+    private DrawerLayout drawer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
 
         layout = (LinearLayout) findViewById(R.id.layout1);
         layout_two = (RelativeLayout) findViewById(R.id.layout2);
@@ -120,6 +124,17 @@ public class SingleChatActivity extends AppCompatActivity{
 
             }
         });
+
+        // Set up drawer
+        drawer = findViewById(R.id.drawer_layout);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawer.addDrawerListener(toggle);
+        toggle.syncState();
+
+        DrawerListener listen = new DrawerListener(this, drawer);
+        NavigationView navigationView = findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(listen);
     }
 
     //Adds message to the chat conversation

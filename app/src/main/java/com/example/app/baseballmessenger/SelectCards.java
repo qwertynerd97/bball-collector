@@ -30,6 +30,7 @@ import java.util.List;
  * Created by pr4h6n on 3/3/18.
  */
 
+// TODO Add functionality to CollectionActivity class and delete
 public class SelectCards extends AppCompatActivity {
 
     TextView noCardsText;
