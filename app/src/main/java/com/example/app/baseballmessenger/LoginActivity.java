@@ -1,6 +1,5 @@
 package com.example.app.baseballmessenger;
 
-import android.app.ProgressDialog;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
@@ -8,38 +7,23 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.content.Intent;
 import android.widget.Button;
 import android.widget.Toast;
 
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
-import com.firebase.client.FirebaseError;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import org.json.JSONException;
-import org.json.JSONObject;
 
-import java.util.Iterator;
-
-
-public class Login extends AppCompatActivity {
+public class LoginActivity extends AppCompatActivity {
     TextView registerUser;
     EditText emailAddress, password;
     Button loginButton;
@@ -63,7 +47,7 @@ public class Login extends AppCompatActivity {
         registerUser.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(Login.this, Register.class));
+                startActivity(new Intent(LoginActivity.this, RegisterActivity.class));
             }
         });
 
@@ -87,7 +71,7 @@ public class Login extends AppCompatActivity {
                 else
                 {
                     mAuth.signInWithEmailAndPassword(email, pass)
-                            .addOnCompleteListener(Login.this, new OnCompleteListener<AuthResult>() {
+                            .addOnCompleteListener(LoginActivity.this, new OnCompleteListener<AuthResult>() {
                                 @Override
                                 public void onComplete(@NonNull Task<AuthResult> task) {
                                     Log.d("Error Result","Tried to auth");
@@ -106,10 +90,10 @@ public class Login extends AppCompatActivity {
                                             }
                                         });
                                         UserDetails.currentUser = mAuth.getCurrentUser(); //Store current user data (Uid, email address, etc.)
-                                        startActivity(new Intent(Login.this, SearchUsersActivity.class));
+                                        startActivity(new Intent(LoginActivity.this, SearchUsersActivity.class));
                                     } else {
                                         Log.d("Error Result","Auth failed");
-                                        Toast.makeText(Login.this, "Authentication failed.",
+                                        Toast.makeText(LoginActivity.this, "Authentication failed.",
                                                 Toast.LENGTH_LONG).show();
                                     }
                                 }
@@ -119,13 +103,13 @@ public class Login extends AppCompatActivity {
             }
         });
 
-        // Auto-Login
+        // Auto-LoginActivity
         String mail = sharedPref.getString("user_email", "dummyuser@gmail.com");
         String password = sharedPref.getString("user_password", "areallydummypassword");
 
         if(!mail.equals("dummyuser@gmail.com")) {
             mAuth.signInWithEmailAndPassword(mail, password)
-                    .addOnCompleteListener(Login.this, new OnCompleteListener<AuthResult>() {
+                    .addOnCompleteListener(LoginActivity.this, new OnCompleteListener<AuthResult>() {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             Log.d("Error Result", "Tried to auth");
@@ -143,10 +127,10 @@ public class Login extends AppCompatActivity {
                                     }
                                 });
                                 UserDetails.currentUser = mAuth.getCurrentUser(); //Store current user data (Uid, email address, etc.)
-                                startActivity(new Intent(Login.this, SearchUsersActivity.class));
+                                startActivity(new Intent(LoginActivity.this, SearchUsersActivity.class));
                             } else {
                                 Log.d("Error Result", "Auth failed");
-                                Toast.makeText(Login.this, "Authentication failed.",
+                                Toast.makeText(LoginActivity.this, "Authentication failed.",
                                         Toast.LENGTH_LONG).show();
                             }
                         }

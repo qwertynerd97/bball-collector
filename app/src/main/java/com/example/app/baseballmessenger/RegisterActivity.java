@@ -12,12 +12,6 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
 import com.firebase.client.Firebase;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -29,7 +23,7 @@ import com.google.firebase.auth.FirebaseUser;
  * Created by pr4h6n on 2/25/18.
  */
 
-public class Register extends AppCompatActivity {
+public class RegisterActivity extends AppCompatActivity {
     EditText emailAddress, password;
     Button registerButton;
     String email, pass;
@@ -54,7 +48,7 @@ public class Register extends AppCompatActivity {
         login.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(Register.this, Login.class));
+                startActivity(new Intent(RegisterActivity.this, LoginActivity.class));
             }
         });
 
@@ -82,7 +76,7 @@ public class Register extends AppCompatActivity {
                 else
                 {
                     mAuth.createUserWithEmailAndPassword(email, pass)
-                            .addOnCompleteListener(Register.this, new OnCompleteListener<AuthResult>() {
+                            .addOnCompleteListener(RegisterActivity.this, new OnCompleteListener<AuthResult>() {
                                 @Override
                                 public void onComplete(@NonNull Task<AuthResult> task) {
                                     if (task.isSuccessful())
@@ -93,12 +87,12 @@ public class Register extends AppCompatActivity {
                                         newUser.updateFirebase();
                                         Handoff.currentUser = newUser;
                                         sharedPref.edit().putString("user_email",email).putString("user_password",pass).apply();
-                                        Toast.makeText(Register.this, "Registration successful", Toast.LENGTH_LONG).show();
-                                        startActivity(new Intent(Register.this, SearchUsersActivity.class));
+                                        Toast.makeText(RegisterActivity.this, "Registration successful", Toast.LENGTH_LONG).show();
+                                        startActivity(new Intent(RegisterActivity.this, SearchUsersActivity.class));
 
                                     } else {
                                         // If sign in fails, display a message to the user.
-                                        Toast.makeText(Register.this, "Authentication failed.",
+                                        Toast.makeText(RegisterActivity.this, "Authentication failed.",
                                                 Toast.LENGTH_LONG).show();
                                     }
                                 }
