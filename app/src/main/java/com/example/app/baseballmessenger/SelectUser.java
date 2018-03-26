@@ -26,7 +26,6 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-import static com.example.app.baseballmessenger.UserDetails.db;
 
 /**
  * Created by pr4h6n on 3/3/18.

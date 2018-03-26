@@ -48,7 +48,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import static com.example.app.baseballmessenger.UserDetails.db;
 
 /**
  * Created by pr4h6n on 2/25/18.
