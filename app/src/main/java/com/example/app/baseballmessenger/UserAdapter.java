@@ -28,12 +28,12 @@ public class UserAdapter extends ArrayAdapter {
         super(context, textViewResourceId);
         resourceId = textViewResourceId;
         users = new ArrayList<User>();
-        users.add(new User("ABC","dummy01","blah@gmail.com",200.0,3,3));
-        users.add(new User("ABC","dummy02","blah@gmail.com",200.0,3,3));
-        users.add(new User("ABC","dummy03","blah@gmail.com",200.0,3,3));
-        users.add(new User("ABC","dummy04","blah@gmail.com",200.0,3,3));
-        users.add(new User("ABC","dummy05","blah@gmail.com",200.0,3,3));
-        users.add(new User("ABC","dummy06","blah@gmail.com",200.0,3,3));
+        users.add(new User("ABC","dummy01","blah@gmail.com",200.0,3,3, "dummy.jpg"));
+        users.add(new User("ABC","dummy02","blah@gmail.com",200.0,3,3, "dummy.jpg"));
+        users.add(new User("ABC","dummy03","blah@gmail.com",200.0,3,3, "dummy.jpg"));
+        users.add(new User("ABC","dummy04","blah@gmail.com",200.0,3,3, "dummy.jpg"));
+        users.add(new User("ABC","dummy05","blah@gmail.com",200.0,3,3, "dummy.jpg"));
+        users.add(new User("ABC","dummy06","blah@gmail.com",200.0,3,3, "dummy.jpg"));
     }
 
     @Override
