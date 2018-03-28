@@ -30,6 +30,7 @@ import java.util.List;
  * Created by pr4h6n on 3/3/18.
  */
 
+// TODO Add functionality to CollectionActivity class and delete
 public class SelectCards extends AppCompatActivity {
 
     TextView noCardsText;
@@ -65,7 +66,7 @@ public class SelectCards extends AppCompatActivity {
             //Load other user's cards
             allCards = new ArrayList<>();
 
-            String url = "https://baseballmessenger-afdea.firebaseio.com/users/" + UserDetails.selectedUserTrade + "/cards.json";
+            String url = "https://baseballmessenger-afdea.firebaseio.com/cards/" + UserDetails.selectedUserTrade + "/cards.json";
 
             StringRequest request = new StringRequest(Request.Method.GET, url, new Response.Listener<String>(){
                 @Override

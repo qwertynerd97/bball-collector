@@ -2,7 +2,11 @@ package com.example.app.baseballmessenger;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.NavigationView;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -27,7 +31,7 @@ import java.util.Iterator;
  * Created by pr4h6n on 2/27/18.
  */
 
-public class Trades extends AppCompatActivity {
+public class TradeListActivity extends AppCompatActivity {
     ListView tradesList;
     TextView noTradesText;
     Button newTradeButton;
@@ -60,7 +64,7 @@ public class Trades extends AppCompatActivity {
             }
         });
 
-        RequestQueue rQueue = Volley.newRequestQueue(Trades.this);
+        RequestQueue rQueue = Volley.newRequestQueue(TradeListActivity.this);
         rQueue.add(request);
 
         tradesList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -69,7 +73,7 @@ public class Trades extends AppCompatActivity {
                 //Store trade information for future use
                 UserDetails.tradeWith = UserDetails.hashMap.get(al.get(position).substring(11, al.get(position).indexOf(" #")));
                 UserDetails.tradeNumber = al.get(position).substring(al.get(position).indexOf(" #")+2);
-                startActivity(new Intent(Trades.this, SingleTradeActivity.class));
+                startActivity(new Intent(TradeListActivity.this, SingleTradeActivity.class));
             }
         });
 
@@ -82,7 +86,7 @@ public class Trades extends AppCompatActivity {
                 NewTrade.receivedCards.clear();
                 NewTrade.sentCardsAl.clear();
                 NewTrade.sentCards.clear();
-                startActivity(new Intent(Trades.this, NewTrade.class));
+                startActivity(new Intent(TradeListActivity.this, NewTrade.class));
             }
         });
 
@@ -156,6 +160,19 @@ public class Trades extends AppCompatActivity {
             tradesList.setVisibility(View.VISIBLE);
             tradesList.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, al));
         }
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawer.addDrawerListener(toggle);
+        toggle.syncState();
+
+        DrawerListener listen = new DrawerListener(this, drawer);
+        NavigationView navigationView = findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(listen);
     }
 
 }

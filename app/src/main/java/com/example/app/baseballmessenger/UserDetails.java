@@ -16,7 +16,6 @@ public class UserDetails {
     static String tradeNumber = ""; //Stores the trade number of existing trade
     static FirebaseUser currentUser; //Stores the current user's data
     static HashMap<String, String> hashMap = new HashMap<>(); //Stores user UID-email address lookup table
-    static AppDatabase db; //Stores local database
 
     static int card_mode = 2; //received = 1, sent = 0, startup = 2 | used to determine if cards selected are for received or sent cards list
 }

@@ -10,7 +10,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.example.app.baseballmessenger.Login">
+    tools:context="com.example.app.baseballmessenger.LoginActivity">
 
     <TextView
         android:id="@+id/textView"

@@ -48,13 +48,12 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import static com.example.app.baseballmessenger.UserDetails.db;
 
 /**
  * Created by pr4h6n on 2/25/18.
  */
 
-public class SearchUsersActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class SearchUsersActivity extends AppCompatActivity{
     private DrawerLayout drawer;
     private Toolbar toolbar;
     private GridView userScroll;
@@ -65,8 +64,7 @@ public class SearchUsersActivity extends AppCompatActivity implements Navigation
     private Context mContext = this;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState)
-    {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user);
 
@@ -74,31 +72,34 @@ public class SearchUsersActivity extends AppCompatActivity implements Navigation
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        // Set up drawer
+        drawer = findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
+        DrawerListener listen = new DrawerListener(this, drawer);
+        NavigationView navigationView = findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(listen);
 
         // Set up pretty user scroll
         userScroll = (GridView) findViewById(R.id.user_scroll);
         userScroll.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View v,
                                     int position, long id) {
-                Toast.makeText(SearchUsersActivity.this, "" + position,
-                        Toast.LENGTH_SHORT).show();
+                Intent i=new Intent(SearchUsersActivity.this,UserDetailActivity.class);
+                i.putExtra("user", users.get(position));
+                startActivity(i);
             }
         });
 
-        // Set up list of users
+        // Set up list of Users
         users = new ArrayList<User>();
 
         // Set up Firebase
         mAuth = FirebaseAuth.getInstance();
-        reference = FirebaseDatabase.getInstance().getReference("users");
+        reference = User.databaseReference();
         Query q = reference.orderByChild("email");
 
         ChildEventListener userListener = new ChildEventListener() {
@@ -138,62 +139,5 @@ public class SearchUsersActivity extends AppCompatActivity implements Navigation
         userScroll.setAdapter(adapter);
     }
 
-    @Override
-    public void onBackPressed() {
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        if (drawer.isDrawerOpen(GravityCompat.START)) {
-            drawer.closeDrawer(GravityCompat.START);
-        } else {
-            super.onBackPressed();
-        }
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
-        // Handle navigation view item clicks here.
-        int id = item.getItemId();
-
-        if (id == R.id.nav_collection) {
-            startActivity(new Intent(SearchUsersActivity.this, NewTrade.class));
-        } else if (id == R.id.nav_wishlist) {
-            startActivity(new Intent(SearchUsersActivity.this, NewTrade.class));
-        } else if (id == R.id.nav_profile) {
-            Intent i=new Intent(this,UserDetailActivity.class);
-            i.putExtra("user", Handoff.currentUser);
-            startActivity(i);
-        } else if (id == R.id.nav_chat) {
-            startActivity(new Intent(SearchUsersActivity.this, NewTrade.class));
-        } else if (id == R.id.nav_users) {
-            startActivity(new Intent(SearchUsersActivity.this, SearchUsersActivity.class));
-        } else if (id == R.id.nav_trade) {
-            startActivity(new Intent(SearchUsersActivity.this, NewTrade.class));
-        }
-
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);
-        return true;
-    }
 
 }
