@@ -99,7 +99,7 @@ public class SearchUsersActivity extends AppCompatActivity{
 
         // Set up Firebase
         mAuth = FirebaseAuth.getInstance();
-        reference = FirebaseDatabase.getInstance().getReference("users");
+        reference = User.databaseReference();
         Query q = reference.orderByChild("email");
 
         ChildEventListener userListener = new ChildEventListener() {

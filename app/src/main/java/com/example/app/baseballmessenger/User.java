@@ -2,14 +2,23 @@ package com.example.app.baseballmessenger;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.util.Log;
+import android.widget.Toast;
+
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
 import java.util.HashMap;
 import java.util.Map;
 
 /**
  * User is an encapsulating class that provides access to User data from the Firebase Database.
  * User can be passed between Activities
+ * Users are stored in the Firebase Database at /users/:uuid
  * Created by elli on 3/13/18.
  */
 public class User implements Parcelable {
@@ -131,6 +140,39 @@ public class User implements Parcelable {
     }
 
     /**
+     * Get user from database from uuid
+     * @param uuid The uuid of the user to retrieve
+     */
+    public User(String uuid){
+        DatabaseReference reference = User.databaseReference().child(uuid);
+        ValueEventListener userListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                User.this.setValues(dataSnapshot.getValue(User.class));
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {}
+        };
+        reference.addListenerForSingleValueEvent(userListener);
+    }
+
+    /**
+     * Sets user values based on another user
+     * @param other Values to use for this user
+     */
+    private void setValues(User other){
+        this.uuid = other.uuid;
+        this.displayName = other.displayName;
+        this.email = other.email;
+        this.value = other.value;
+        this.numCollection = other.numCollection;
+        this.numWishlist = other.numWishlist;
+        this.chats = other.chats;
+        this.trades = other.trades;
+        this.imageName = other.imageName;
+    }
+
+    /**
      * Updates the Firebase database with the values for this user
      */
     public void updateFirebase(){
@@ -202,5 +244,21 @@ public class User implements Parcelable {
         }
 
         return temp;
+    }
+
+    /**
+     * Gets the database location for a particular user
+     * @return The Firebase location for the particular user
+     */
+    public DatabaseReference getDatabaseReference(){
+        return FirebaseDatabase.getInstance().getReference("users").child(uuid);
+    }
+
+    /**
+     * Gets the database location for all users
+     * @return The Firebase location for all users
+     */
+    public static DatabaseReference databaseReference(){
+        return FirebaseDatabase.getInstance().getReference("users");
     }
 }
