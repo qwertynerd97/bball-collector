@@ -25,6 +25,7 @@
         <activity android:name=".SingleTradeActivity" />
         <activity android:name=".NewTradeActivity" />
         <activity android:name=".SelectCardsActivity" />
+        <activity android:name=".ChatListActivity"/>
 
         <meta-data
             android:name="preloaded_fonts"

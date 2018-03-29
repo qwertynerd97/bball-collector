@@ -34,7 +34,7 @@ public class DrawerListener implements NavigationView.OnNavigationItemSelectedLi
             i.putExtra("user", Handoff.currentUser);
             context.startActivity(i);
         } else if (id == R.id.nav_chat) {
-            context.startActivity(new Intent(context, NewTradeActivity.class));
+            context.startActivity(new Intent(context, ChatListActivity.class));
         } else if (id == R.id.nav_users) {
             context.startActivity(new Intent(context, SearchUsersActivity.class));
         } else if (id == R.id.nav_trade) {
