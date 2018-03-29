@@ -195,7 +195,7 @@ public class Card implements Parcelable{
     }
 
     /**
-     * Describes the parcelable contents as an integer
+     * Describes the parcelable contents as an  integer
      * @return 0
      */
     @Override
