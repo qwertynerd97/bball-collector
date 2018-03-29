@@ -114,7 +114,6 @@ public class SingleTradeActivity extends AppCompatActivity {
             }
         });
 
-        //TODO Complete acceptButton.setOnClickListener()
         acceptButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v)
@@ -138,7 +137,6 @@ public class SingleTradeActivity extends AppCompatActivity {
             }
         });
 
-        //TODO Complete rejectButton.setOnClickListener()
         rejectButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v)

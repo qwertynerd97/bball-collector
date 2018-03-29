@@ -22,8 +22,7 @@ import java.util.Random;
  * Created by pr4h6n on 3/3/18.
  */
 
-//TODO REFACTOR
-    //TODO Rename to 'NewTradeActivity'
+
 public class NewTradeActivity extends AppCompatActivity {
 
     Button selectUserButton;
