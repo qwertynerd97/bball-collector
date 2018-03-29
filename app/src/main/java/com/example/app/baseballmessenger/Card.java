@@ -240,7 +240,7 @@ public class Card implements Parcelable{
      * Gets the database location for a particular card
      * @return The Firebase location for the particular card
      */
-    public DatabaseReference getDatabaseReference(){
+    public DatabaseReference dbReference(){
         String location = (inCollection ? "collection" : "wishlist");
         return FirebaseDatabase.getInstance().getReference("cards").child(owner).child(location).child(uuid);
     }

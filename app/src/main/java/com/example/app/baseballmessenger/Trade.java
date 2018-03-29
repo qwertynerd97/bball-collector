@@ -201,7 +201,7 @@ public class Trade implements Parcelable {
      * Gets the database location for a particular trade
      * @return The Firebase location for the particular trade
      */
-    public DatabaseReference getDatabaseReference(){
+    public DatabaseReference dbReference(){
         return FirebaseDatabase.getInstance().getReference("trades").child(uuid);
     }
 

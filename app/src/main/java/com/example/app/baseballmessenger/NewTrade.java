@@ -134,17 +134,17 @@ public class NewTrade extends AppCompatActivity {
 
                 for(int i = 0; i < receivedCards.size(); i++)
                 {
-                    Map<String, String> temp2 = new HashMap<>();
-                    temp2.put("condition", receivedCards.get(i).getCondition());
-                    temp2.put("date_acquired", receivedCards.get(i).getDateAcquired());
-                    temp2.put("name", receivedCards.get(i).getName());
-                    temp2.put("number", receivedCards.get(i).getNumber());
-                    temp2.put("owner", UserDetails.selectedUserTrade);
-                    temp2.put("role", receivedCards.get(i).getRole());
-                    temp2.put("team", receivedCards.get(i).getTeam());
-                    temp2.put("value", Integer.toString((int)(receivedCards.get(i).getValue())));
-                    temp2.put("year", receivedCards.get(i).getYear());
-                    tradedCard.put(Integer.toString((int)Math.round(Math.random()*100 + 1)), temp2); //Card identifier, data object
+//                    Map<String, String> temp2 = new HashMap<>();
+//                    temp2.put("condition", receivedCards.get(i).getCondition());
+//                    temp2.put("date_acquired", receivedCards.get(i).getDateAcquired());
+//                    temp2.put("name", receivedCards.get(i).getName());
+//                    temp2.put("number", receivedCards.get(i).getNumber());
+//                    temp2.put("owner", UserDetails.selectedUserTrade);
+//                    temp2.put("role", receivedCards.get(i).getRole());
+//                    temp2.put("team", receivedCards.get(i).getTeam());
+//                    temp2.put("value", Integer.toString((int)(receivedCards.get(i).getValue())));
+//                    temp2.put("year", receivedCards.get(i).getYear());
+//                    tradedCard.put(Integer.toString((int)Math.round(Math.random()*100 + 1)), temp2); //Card identifier, data object
                 }
                 reference_one.child(tradeIdentifier).child("cards_received").setValue(tradedCard); //Push all cards to Firebase
 
@@ -152,19 +152,19 @@ public class NewTrade extends AppCompatActivity {
 
                 for(int i = 0; i < sentCards.size(); i++)
                 {
-                    Map<String, Object> temp2 = new HashMap<>();
-                    temp2.put("condition", sentCards.get(i).getCondition());
-                    temp2.put("date_acquired", sentCards.get(i).getDateAcquired());
-                    temp2.put("name", sentCards.get(i).getName());
-                    temp2.put("number", sentCards.get(i).getNumber());
-                    temp2.put("owner", UserDetails.currentUser.getUid());
-                    temp2.put("role", sentCards.get(i).getRole());
-                    temp2.put("team", sentCards.get(i).getTeam());
-                    temp2.put("value", Integer.toString((int)(sentCards.get(i).getValue())));
-                    temp2.put("year", sentCards.get(i).getYear());
-                    tradedCard.put(Integer.toString((int)Math.round(Math.random()*100 +1)), temp2); //Card identifier, data object
-
-                    UserDetails.db.cardDAO().delete(sentCards.get(i).getName(), sentCards.get(i).getNumber()); //TODO Eliminate local database for Firebase cloud storage
+//                    Map<String, Object> temp2 = new HashMap<>();
+//                    temp2.put("condition", sentCards.get(i).getCondition());
+//                    temp2.put("date_acquired", sentCards.get(i).getDateAcquired());
+//                    temp2.put("name", sentCards.get(i).getName());
+//                    temp2.put("number", sentCards.get(i).getNumber());
+//                    temp2.put("owner", UserDetails.currentUser.getUid());
+//                    temp2.put("role", sentCards.get(i).getRole());
+//                    temp2.put("team", sentCards.get(i).getTeam());
+//                    temp2.put("value", Integer.toString((int)(sentCards.get(i).getValue())));
+//                    temp2.put("year", sentCards.get(i).getYear());
+//                    tradedCard.put(Integer.toString((int)Math.round(Math.random()*100 +1)), temp2); //Card identifier, data object
+//
+//                    UserDetails.db.cardDAO().delete(sentCards.get(i).getName(), sentCards.get(i).getNumber()); //TODO Eliminate local database for Firebase cloud storage
                 }
 
                 //Push all cards to Firebase - waits for push() to complete before starting activity
@@ -188,21 +188,21 @@ public class NewTrade extends AppCompatActivity {
         Firebase reference = new Firebase("https://baseballmessenger-afdea.firebaseio.com/cards/" + UserDetails.currentUser.getUid());
 
         Map<String, Object> newCard = new HashMap<>();
-        List<Card> receivedCards = UserDetails.db.cardDAO().getAll();
-        for(int i = 0; i < receivedCards.size(); i++)
-        {
-            Map<String, String> temp2 = new HashMap<>();
-            temp2.put("condition", receivedCards.get(i).getCondition());
-            temp2.put("date_acquired", receivedCards.get(i).getDateAcquired());
-            temp2.put("name", receivedCards.get(i).getName());
-            temp2.put("number", receivedCards.get(i).getNumber());
-            temp2.put("owner", UserDetails.currentUser.getUid());
-            temp2.put("role", receivedCards.get(i).getRole());
-            temp2.put("team", receivedCards.get(i).getTeam());
-            temp2.put("value", Integer.toString((int)(receivedCards.get(i).getValue())));
-            temp2.put("year", receivedCards.get(i).getYear());
-            newCard.put(Integer.toString((int)Math.round(Math.random()*100 + 1)), temp2); //Card identifier, data object
-        }
-        reference.child("cards").setValue(newCard);
+//        List<Card> receivedCards = UserDetails.db.cardDAO().getAll();
+//        for(int i = 0; i < receivedCards.size(); i++)
+//        {
+//            Map<String, String> temp2 = new HashMap<>();
+//            temp2.put("condition", receivedCards.get(i).getCondition());
+//            temp2.put("date_acquired", receivedCards.get(i).getDateAcquired());
+//            temp2.put("name", receivedCards.get(i).getName());
+//            temp2.put("number", receivedCards.get(i).getNumber());
+//            temp2.put("owner", UserDetails.currentUser.getUid());
+//            temp2.put("role", receivedCards.get(i).getRole());
+//            temp2.put("team", receivedCards.get(i).getTeam());
+//            temp2.put("value", Integer.toString((int)(receivedCards.get(i).getValue())));
+//            temp2.put("year", receivedCards.get(i).getYear());
+//            newCard.put(Integer.toString((int)Math.round(Math.random()*100 + 1)), temp2); //Card identifier, data object
+//        }
+//        reference.child("cards").setValue(newCard);
     }
 }

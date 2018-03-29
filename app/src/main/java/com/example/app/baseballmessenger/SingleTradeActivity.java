@@ -100,17 +100,17 @@ public class SingleTradeActivity extends AppCompatActivity {
                     try {
                         JSONObject obj = new JSONObject(cards_sent_al_json.get(cards_sent_al.get(i)));
 
-                        Card tempCard = new Card();
-                        tempCard.setCondition(obj.getString("condition"));
-                        tempCard.setDateAcquired(obj.getString("date_acquired"));
-                        tempCard.setName(obj.getString("name"));
-                        tempCard.setNumber(obj.getString("number"));
-                        tempCard.setRole(obj.getString("role"));
-                        tempCard.setValue(Double.parseDouble(obj.getString("value")));
-                        tempCard.setYear(obj.getString("year"));
-                        tempCard.setTeam(obj.getString("team"));
-
-                        UserDetails.db.cardDAO().insertAll(tempCard); //TODO Eliminate local database for Firebase cloud storage
+//                        Card tempCard = new Card();
+//                        tempCard.setCondition(obj.getString("condition"));
+//                        tempCard.setDateAcquired(obj.getString("date_acquired"));
+//                        tempCard.setName(obj.getString("name"));
+//                        tempCard.setNumber(obj.getString("number"));
+//                        tempCard.setRole(obj.getString("role"));
+//                        tempCard.setValue(Double.parseDouble(obj.getString("value")));
+//                        tempCard.setYear(obj.getString("year"));
+//                        tempCard.setTeam(obj.getString("team"));
+//
+//                        UserDetails.db.cardDAO().insertAll(tempCard); //TODO Eliminate local database for Firebase cloud storage
 
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -139,16 +139,16 @@ public class SingleTradeActivity extends AppCompatActivity {
                         map.put("team", obj.getString("team"));
                         reference.push().setValue(map);
 
-                        Card tempCard = new Card();
-                        tempCard.setCondition(obj.getString("condition"));
-                        tempCard.setDateAcquired(obj.getString("date_acquired"));
-                        tempCard.setName(obj.getString("name"));
-                        tempCard.setNumber(obj.getString("number"));
-                        tempCard.setRole(obj.getString("role"));
-                        tempCard.setValue(Double.parseDouble(obj.getString("value")));
-                        tempCard.setYear(obj.getString("year"));
-                        tempCard.setTeam(obj.getString("team"));
-                        UserDetails.db.cardDAO().delete(tempCard.getName(), tempCard.getNumber()); //TODO Eliminate local database for Firebase cloud storage
+//                        Card tempCard = new Card();
+//                        tempCard.setCondition(obj.getString("condition"));
+//                        tempCard.setDateAcquired(obj.getString("date_acquired"));
+//                        tempCard.setName(obj.getString("name"));
+//                        tempCard.setNumber(obj.getString("number"));
+//                        tempCard.setRole(obj.getString("role"));
+//                        tempCard.setValue(Double.parseDouble(obj.getString("value")));
+//                        tempCard.setYear(obj.getString("year"));
+//                        tempCard.setTeam(obj.getString("team"));
+//                        UserDetails.db.cardDAO().delete(tempCard.getName(), tempCard.getNumber()); //TODO Eliminate local database for Firebase cloud storage
 
                     }
                     catch(JSONException e)
@@ -386,23 +386,23 @@ public class SingleTradeActivity extends AppCompatActivity {
         Firebase reference = new Firebase("https://baseballmessenger-afdea.firebaseio.com/cards/" + UserDetails.currentUser.getUid());
 
         Map<String, Object> newCard = new HashMap<>();
-        List<Card> receivedCards = UserDetails.db.cardDAO().getAll();
-        System.out.println(receivedCards.size());
-        for(int i = 0; i < receivedCards.size(); i++)
-        {
-            Map<String, String> temp2 = new HashMap<>();
-            temp2.put("condition", receivedCards.get(i).getCondition());
-            temp2.put("date_acquired", receivedCards.get(i).getDateAcquired());
-            temp2.put("name", receivedCards.get(i).getName());
-            temp2.put("number", receivedCards.get(i).getNumber());
-            temp2.put("owner", UserDetails.currentUser.getUid());
-            temp2.put("role", receivedCards.get(i).getRole());
-            temp2.put("team", receivedCards.get(i).getTeam());
-            temp2.put("value", Integer.toString((int)(receivedCards.get(i).getValue())));
-            temp2.put("year", receivedCards.get(i).getYear());
-            newCard.put(Integer.toString((int)Math.round(Math.random()*100 + 1)), temp2);
-        }
-        reference.child("cards").setValue(newCard);
+//        List<Card> receivedCards = UserDetails.db.cardDAO().getAll();
+//        System.out.println(receivedCards.size());
+//        for(int i = 0; i < receivedCards.size(); i++)
+//        {
+//            Map<String, String> temp2 = new HashMap<>();
+//            temp2.put("condition", receivedCards.get(i).getCondition());
+//            temp2.put("date_acquired", receivedCards.get(i).getDateAcquired());
+//            temp2.put("name", receivedCards.get(i).getName());
+//            temp2.put("number", receivedCards.get(i).getNumber());
+//            temp2.put("owner", UserDetails.currentUser.getUid());
+//            temp2.put("role", receivedCards.get(i).getRole());
+//            temp2.put("team", receivedCards.get(i).getTeam());
+//            temp2.put("value", Integer.toString((int)(receivedCards.get(i).getValue())));
+//            temp2.put("year", receivedCards.get(i).getYear());
+//            newCard.put(Integer.toString((int)Math.round(Math.random()*100 + 1)), temp2);
+//        }
+//        reference.child("cards").setValue(newCard);
 
     }
 }

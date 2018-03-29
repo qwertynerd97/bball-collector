@@ -52,11 +52,11 @@ public class SelectCards extends AppCompatActivity {
         if(UserDetails.card_mode == 0)
         {
             //Load current user's cards
-            allCards = UserDetails.db.cardDAO().getAll(); //TODO Eliminate local database for Firebase cloud storage
+            //allCards = UserDetails.db.cardDAO().getAll(); //TODO Eliminate local database for Firebase cloud storage
 
             for(int i = 0; i < allCards.size(); i++)
             {
-                al.add(allCards.get(i).getName());
+               // al.add(allCards.get(i).getName());
             }
 
             cardsList.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, al));
@@ -81,17 +81,17 @@ public class SelectCards extends AppCompatActivity {
                         {
                             String key = i.next().toString();
                             JSONObject childObj = obj.getJSONObject(key);
-                            Card temp = new Card();
-                            temp.setCondition(childObj.getString("condition"));
-                            temp.setDateAcquired(childObj.getString("date_acquired"));
-                            temp.setName(childObj.getString("name"));
-                            temp.setRole(childObj.getString("role"));
-                            temp.setTeam(childObj.getString("team"));
-                            temp.setNumber(childObj.getString("number"));
-                            temp.setValue(Double.parseDouble(childObj.getString("value")));
-                            temp.setYear(childObj.getString("year"));
-                            allCards.add(temp);
-                            al.add(temp.getName());
+//                            Card temp = new Card();
+//                            temp.setCondition(childObj.getString("condition"));
+//                            temp.setDateAcquired(childObj.getString("date_acquired"));
+//                            temp.setName(childObj.getString("name"));
+//                            temp.setRole(childObj.getString("role"));
+//                            temp.setTeam(childObj.getString("team"));
+//                            temp.setNumber(childObj.getString("number"));
+//                            temp.setValue(Double.parseDouble(childObj.getString("value")));
+//                            temp.setYear(childObj.getString("year"));
+//                            allCards.add(temp);
+//                            al.add(temp.getName());
                         }
 
                         cardsList.setAdapter(new ArrayAdapter<String>(SelectCards.this, android.R.layout.simple_list_item_1, al));
@@ -128,20 +128,20 @@ public class SelectCards extends AppCompatActivity {
                 String cardName = al.get(position);
                 for(int i = 0; i < allCards.size(); i++)
                 {
-                    if(allCards.get(i).getName().equals(cardName))
-                    {
-                        if(UserDetails.card_mode == 0)
-                        {
-                            NewTrade.sentCards.add(allCards.get(i));
-                            NewTrade.sentCardsAl.add(allCards.get(i).getName());
-                        }
-                        else
-                        {
-                            NewTrade.receivedCards.add(allCards.get(i));
-                            NewTrade.receivedCardsAl.add(allCards.get(i).getName());
-                        }
+//                    if(allCards.get(i).getName().equals(cardName))
+//                    {
+//                        if(UserDetails.card_mode == 0)
+//                        {
+//                            NewTrade.sentCards.add(allCards.get(i));
+//                            NewTrade.sentCardsAl.add(allCards.get(i).getName());
+//                        }
+//                        else
+//                        {
+//                            NewTrade.receivedCards.add(allCards.get(i));
+//                            NewTrade.receivedCardsAl.add(allCards.get(i).getName());
+//                        }
                     }
-                }
+//                }
 
             }
         });
