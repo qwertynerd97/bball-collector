@@ -66,7 +66,7 @@ public class Card implements Parcelable{
 
     /**
      * Indicates whether the card is part of initiated trade proposal and whether or not the card
-     * can be edited or deleted
+     * can be edited, traded or deleted
      */
     public boolean lockstatus;
 

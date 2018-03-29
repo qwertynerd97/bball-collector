@@ -127,6 +127,8 @@ public class NewTradeActivity extends AppCompatActivity {
                 {
                     RandomString random = new RandomString();
                     Trade trade = new Trade(random.nextString(), Handoff.currentUser.uuid, selectedUserObj.uuid, sentCard.uuid, requestedCard.uuid, 0);
+                    sentCard.lockstatus = true;
+                    sentCard.updateFirebase();
                     trade.updateFirebase();
                     startActivity(new Intent(NewTradeActivity.this, TradeListActivity.class));
                 }
