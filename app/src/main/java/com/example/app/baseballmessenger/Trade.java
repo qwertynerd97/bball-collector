@@ -202,7 +202,7 @@ public class Trade implements Parcelable {
      * Gets the database location for a particular trade
      * @return The Firebase location for the particular trade
      */
-    public DatabaseReference getDatabaseReference(){
+    public DatabaseReference dbReference(){
         return FirebaseDatabase.getInstance().getReference("trades").child(uuid);
     }
 
@@ -214,6 +214,14 @@ public class Trade implements Parcelable {
      */
     public static DatabaseReference databaseReference(){
         return FirebaseDatabase.getInstance().getReference("trades");
+    }
+
+    /**
+     * Deletes the trade from Firebase
+     */
+    public static void deleteTrade(String uuid){
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
+        reference.child("trades").child(uuid).removeValue();
     }
 }
 

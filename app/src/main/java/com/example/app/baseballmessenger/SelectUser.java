@@ -1,30 +1,17 @@
 package com.example.app.baseballmessenger;
 
-import android.arch.persistence.room.Room;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
 import com.google.firebase.auth.FirebaseAuth;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.util.ArrayList;
-import java.util.Iterator;
 
 
 /**
@@ -53,7 +40,7 @@ public class SelectUser extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 UserDetails.selectedUserTrade = UserDetails.hashMap.get(al.get(position)); //Gets the UID for the selected user email address
-                startActivity(new Intent(SelectUser.this, NewTrade.class));
+                startActivity(new Intent(SelectUser.this, NewTradeActivity.class));
             }
         });
 

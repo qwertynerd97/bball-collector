@@ -44,12 +44,18 @@ public class SingleTradeActivity extends AppCompatActivity {
 
     private String uuid;
     private DatabaseReference ref;
+    Card cardSent;
+    Card cardRequested;
 
     ListView cardsReceivedList;
     ListView cardsSentList;
 
     Button acceptButton;
     Button rejectButton;
+
+    ArrayList<String> al = new ArrayList<>();
+    ArrayList<String> al2 = new ArrayList<>();
+    Trade t;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -68,34 +74,67 @@ public class SingleTradeActivity extends AppCompatActivity {
         acceptButton = (Button)findViewById(R.id.AcceptButton);
         rejectButton = (Button)findViewById(R.id.RejectButton);
 
-        Trade t = new Trade(uuid, new MyCallback() {
+        t = new Trade(uuid, new MyCallback() {
             @Override
             public void onCallback(Trade t) {
-                ArrayList<String> al = new ArrayList<>();
-                al.add(t.cardSent);
-                cardsSentList.setAdapter(new ArrayAdapter<String>(SingleTradeActivity.this, android.R.layout.simple_list_item_1, al));
 
-                ArrayList<String> al2 = new ArrayList<>();
-                al2.add(t.cardRequested);
+                cardRequested = new Card(t.requestingUser, true, t.cardSent, new MyCallback() {
+                    @Override
+                    public void onCallback(Card c) {
+                        al.clear();
+                        al.add(cardRequested.name);
+                        cardsSentList.setAdapter(new ArrayAdapter<String>(SingleTradeActivity.this, android.R.layout.simple_list_item_1, al));
+                    }
 
-                cardsReceivedList.setAdapter(new ArrayAdapter<String>(SingleTradeActivity.this, android.R.layout.simple_list_item_1, al2));
+                    @Override
+                    public void onCallback(Trade t) {
+
+                    }
+                });
+
+
+                cardSent = new Card(t.receivingUser, true, t.cardRequested, new MyCallback() {
+                    @Override
+                    public void onCallback(Card c) {
+                        al2.clear();
+                        al2.add(cardSent.name);
+                        cardsReceivedList.setAdapter(new ArrayAdapter<String>(SingleTradeActivity.this, android.R.layout.simple_list_item_1, al2));
+                    }
+
+                    @Override
+                    public void onCallback(Trade t) {
+
+                    }
+                });
+            }
+
+            @Override
+            public void onCallback(Card c) {
+
             }
         });
 
-        //TODO Need to figure out where cards are going to be stored while waiting for receiving user's response to trade proposal
         //TODO Complete acceptButton.setOnClickListener()
         acceptButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v)
             {
                 //Add cards sent to current user's collection
-
+                Card.deleteCard(cardSent.owner, true, cardSent.uuid);
+                cardSent.owner = t.requestingUser;
+                cardSent.lockstatus = false;
+                cardSent.updateFirebase();
 
                 //Add cards received to other user's collection
-
+                Card.deleteCard(cardRequested.owner, true, cardRequested.uuid);
+                cardRequested.owner = t.receivingUser;
+                cardRequested.lockstatus = false;
+                cardRequested.updateFirebase();
 
                 //Deletes trade object in Firebase database
+                Trade.deleteTrade(t.uuid);
 
+                startActivity(new Intent(SingleTradeActivity.this, TradeListActivity.class));
             }
         });
 
@@ -105,8 +144,13 @@ public class SingleTradeActivity extends AppCompatActivity {
             public void onClick(View v)
             {
                 //Add cards sent to user's collection
+                cardRequested.lockstatus = false;
+                cardRequested.updateFirebase();
 
                 //Deletes trade object in Firebase database
+                Trade.deleteTrade(t.uuid);
+
+                startActivity(new Intent(SingleTradeActivity.this, TradeListActivity.class));
             }
         });
 

@@ -89,7 +89,7 @@ public class LoginActivity extends AppCompatActivity {
 
                                             }
                                         });
-                                        UserDetails.currentUser = mAuth.getCurrentUser(); //Store current user data (Uid, email address, etc.)
+                                        //UserDetails.currentUser = mAuth.getCurrentUser(); //Store current user data (Uid, email address, etc.)
                                         startActivity(new Intent(LoginActivity.this, SearchUsersActivity.class));
                                     } else {
                                         Log.d("Error Result","Auth failed");
@@ -126,7 +126,7 @@ public class LoginActivity extends AppCompatActivity {
 
                                     }
                                 });
-                                UserDetails.currentUser = mAuth.getCurrentUser(); //Store current user data (Uid, email address, etc.)
+                                //UserDetails.currentUser = mAuth.getCurrentUser(); //Store current user data (Uid, email address, etc.)
                                 startActivity(new Intent(LoginActivity.this, SearchUsersActivity.class));
                             } else {
                                 Log.d("Error Result", "Auth failed");

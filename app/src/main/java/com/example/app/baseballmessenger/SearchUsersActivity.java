@@ -62,11 +62,14 @@ public class SearchUsersActivity extends AppCompatActivity{
     private FirebaseAuth mAuth;
     private DatabaseReference reference;
     private Context mContext = this;
+    private String previousActivity = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user);
+
+        previousActivity = getIntent().getStringExtra("previous_activity");
 
         // Set up toolbar and drawer
         toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -88,9 +91,18 @@ public class SearchUsersActivity extends AppCompatActivity{
         userScroll.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View v,
                                     int position, long id) {
-                Intent i=new Intent(SearchUsersActivity.this,UserDetailActivity.class);
-                i.putExtra("user", users.get(position));
-                startActivity(i);
+                if(previousActivity != null && previousActivity.equals("NewTradeActivity"))
+                {
+                    Intent i = new Intent(SearchUsersActivity.this, NewTradeActivity.class);
+                    i.putExtra("user", users.get(position));
+                    startActivity(i);
+                }
+                else
+                {
+                    Intent i=new Intent(SearchUsersActivity.this,UserDetailActivity.class);
+                    i.putExtra("user", users.get(position));
+                    startActivity(i);
+                }
             }
         });
 

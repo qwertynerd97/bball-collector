@@ -11,11 +11,8 @@ import java.util.HashMap;
 
 //TODO Eliminate UserDetails class and use Intent extras instead
 public class UserDetails {
-    static String chatWith = ""; //Stores the other user's UID in chat conversation
-    static String tradeWith = ""; //Stores the other user's UID in existing trade
+
     static String selectedUserTrade = ""; //Stores the other user's UID in new trade
-    static String tradeNumber = ""; //Stores the trade number of existing trade
-    static FirebaseUser currentUser; //Stores the current user's data
     static HashMap<String, String> hashMap = new HashMap<>(); //Stores user UID-email address lookup table
 
     static int card_mode = 2; //received = 1, sent = 0, startup = 2 | used to determine if cards selected are for received or sent cards list

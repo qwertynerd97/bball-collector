@@ -23,8 +23,8 @@
         <activity android:name=".SingleChatActivity" />
         <activity android:name=".TradeListActivity" />
         <activity android:name=".SingleTradeActivity" />
-        <activity android:name=".NewTrade" />
-        <activity android:name=".SelectCards" />
+        <activity android:name=".NewTradeActivity" />
+        <activity android:name=".SelectCardsActivity" />
         <activity android:name=".SelectUser" />
 
         <meta-data

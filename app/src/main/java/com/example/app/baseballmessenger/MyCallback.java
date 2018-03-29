@@ -6,5 +6,6 @@ package com.example.app.baseballmessenger;
 
 public interface MyCallback
 {
+    void onCallback(Card c);
     void onCallback(Trade t);
 }
