@@ -1,5 +1,6 @@
 package com.example.app.baseballmessenger;
 
+import android.arch.persistence.room.Database;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
@@ -20,11 +21,16 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.ValueEventListener;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 
 /**
@@ -35,8 +41,7 @@ public class TradeListActivity extends AppCompatActivity {
     ListView tradesList;
     TextView noTradesText;
     Button newTradeButton;
-    ArrayList<String> al = new ArrayList<String>();
-
+    ArrayList<String> allTrades;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -48,32 +53,52 @@ public class TradeListActivity extends AppCompatActivity {
         noTradesText = (TextView)findViewById(R.id.noTradesText);
         newTradeButton = (Button)findViewById(R.id.newTradeButton);
 
-        String url = "https://baseballmessenger-afdea.firebaseio.com/trades.json";
+        allTrades = new ArrayList<String>();
 
-        StringRequest request = new StringRequest(Request.Method.GET, url, new Response.Listener<String>(){
+        //TODO Implement Navigation Drawer
+//        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+//        setSupportActionBar(toolbar);
+//
+//        DrawerLayout drawer = findViewById(R.id.drawer_layout);
+//        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+//                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+//        drawer.addDrawerListener(toggle);
+//        toggle.syncState();
+//
+//        DrawerListener listen = new DrawerListener(this, drawer);
+//        NavigationView navigationView = findViewById(R.id.nav_view);
+//        navigationView.setNavigationItemSelectedListener(listen);
+
+        //Get list of all trades from Firebase and fill ListView
+        DatabaseReference ref = Trade.databaseReference();
+        ref.addValueEventListener(new ValueEventListener() {
             @Override
-            public void onResponse(String s)
-            {
-                doOnSuccess(s);
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for(DataSnapshot tradeSnapshot: dataSnapshot.getChildren())
+                {
+                    Trade trade = tradeSnapshot.getValue(Trade.class);
+                    if(trade.receivingUser.equals(Handoff.currentUser.uuid))
+                    {
+                        allTrades.add(trade.uuid);
+                    }
+                }
+
+                tradesList.setVisibility(View.VISIBLE);
+                tradesList.setAdapter(new ArrayAdapter<String>(TradeListActivity.this, android.R.layout.simple_list_item_1, allTrades));
             }
-        }, new Response.ErrorListener(){
+
             @Override
-            public void onErrorResponse(VolleyError volleyError)
-            {
-                System.out.println("" + volleyError);
+            public void onCancelled(DatabaseError databaseError) {
+
             }
         });
-
-        RequestQueue rQueue = Volley.newRequestQueue(TradeListActivity.this);
-        rQueue.add(request);
 
         tradesList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                //Store trade information for future use
-                UserDetails.tradeWith = UserDetails.hashMap.get(al.get(position).substring(11, al.get(position).indexOf(" #")));
-                UserDetails.tradeNumber = al.get(position).substring(al.get(position).indexOf(" #")+2);
-                startActivity(new Intent(TradeListActivity.this, SingleTradeActivity.class));
+                Intent i = new Intent(TradeListActivity.this, SingleTradeActivity.class);
+                i.putExtra("uuid", allTrades.get(position));
+                startActivity(i);
             }
         });
 
@@ -81,98 +106,9 @@ public class TradeListActivity extends AppCompatActivity {
             @Override
             public void onClick(View v)
             {
-                //Clear all ArrayLists containing past selections from other trades
-                NewTrade.receivedCardsAl.clear();
-                NewTrade.receivedCards.clear();
-                NewTrade.sentCardsAl.clear();
-                NewTrade.sentCards.clear();
                 startActivity(new Intent(TradeListActivity.this, NewTrade.class));
             }
         });
 
     }
-
-    //Displays all trades that involve current user but were not initiated by current user (they shouldn't be allowed to accept/decline their own trade proposal)
-    public void doOnSuccess(String s)
-    {
-        try{
-            JSONObject obj = new JSONObject(s);
-            Iterator i = obj.keys();
-
-            while(i.hasNext())
-            {
-                String uid = i.next().toString();
-                if(uid.contains(UserDetails.currentUser.getUid()))
-                {
-                    JSONObject childObj = obj.getJSONObject(uid);
-
-                    Iterator i2 = childObj.keys();
-                    while(i2.hasNext())
-                    {
-                        String tradeIdentifier = i2.next().toString();
-                        JSONObject childOfChildObj = childObj.getJSONObject(tradeIdentifier);
-                        if(!childOfChildObj.getString("user").equals(UserDetails.currentUser.getUid()))
-                        {
-                            String tradeNumber = childOfChildObj.getString("trade_id");
-                            String[] users = uid.split("_");
-
-                            String otherUserUID;
-                            String otherUserEmail = "";
-
-                            //Get the other user's UID
-                            if(users[0].equals(UserDetails.currentUser.getUid()))
-                            {
-                                otherUserUID = users[1];
-                            }
-                            else
-                            {
-                                otherUserUID = users[0];
-                            }
-
-                            //Get user email from UID
-                            for(String key: UserDetails.hashMap.keySet())
-                            {
-                                if(UserDetails.hashMap.get(key).equals(otherUserUID))
-                                {
-                                    otherUserEmail = key;
-                                }
-                            }
-
-                            al.add("SingleTradeActivity with " + otherUserEmail + " #" + tradeNumber);
-                        }
-                    }
-                }
-            }
-
-        }catch (JSONException e)
-        {
-            e.printStackTrace();
-        }
-
-        if(al.size() < 1)
-        {
-            noTradesText.setVisibility(View.VISIBLE);
-            tradesList.setVisibility(View.GONE);
-        }
-        else
-        {
-            noTradesText.setVisibility(View.GONE);
-            tradesList.setVisibility(View.VISIBLE);
-            tradesList.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, al));
-        }
-
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-
-        DrawerLayout drawer = findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.addDrawerListener(toggle);
-        toggle.syncState();
-
-        DrawerListener listen = new DrawerListener(this, drawer);
-        NavigationView navigationView = findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(listen);
-    }
-
 }

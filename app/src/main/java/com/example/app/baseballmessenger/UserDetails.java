@@ -9,6 +9,7 @@ import java.util.HashMap;
  * Created by pr4h6n on 2/25/18.
  */
 
+//TODO Eliminate UserDetails class and use Intent extras instead
 public class UserDetails {
     static String chatWith = ""; //Stores the other user's UID in chat conversation
     static String tradeWith = ""; //Stores the other user's UID in existing trade

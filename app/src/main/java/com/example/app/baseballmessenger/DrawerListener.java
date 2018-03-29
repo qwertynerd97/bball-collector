@@ -38,7 +38,7 @@ public class DrawerListener implements NavigationView.OnNavigationItemSelectedLi
         } else if (id == R.id.nav_users) {
             context.startActivity(new Intent(context, SearchUsersActivity.class));
         } else if (id == R.id.nav_trade) {
-            context.startActivity(new Intent(context, NewTrade.class));
+            context.startActivity(new Intent(context, TradeListActivity.class));
         }
 
         drawer.closeDrawer(GravityCompat.START);

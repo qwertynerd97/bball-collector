@@ -84,6 +84,7 @@ public class SingleChatActivity extends AppCompatActivity{
                 String uuid = reference.push().getKey();
                 Message newMessage = new Message(uuid, chat, currentUser.uuid, chattingWith.uuid, messageText);
                 newMessage.updateFirebase();
+                messageArea.setText("");
             }
         });
 
