@@ -1,9 +1,5 @@
 package com.example.app.baseballmessenger;
 
-import android.media.Image;
-import android.os.Parcel;
-import android.os.Parcelable;
-
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -75,7 +71,7 @@ public class Message {
         ValueEventListener userListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                Message.this.setValues(dataSnapshot.getValue(Message.class));
+                Message.this.values(dataSnapshot.getValue(Message.class));
             }
             @Override
             public void onCancelled(DatabaseError databaseError) {}
@@ -87,7 +83,7 @@ public class Message {
      * Sets message values based on another message
      * @param other Values to use for this message
      */
-    private void setValues(Message other){
+    private void values(Message other){
         this.uuid = other.uuid;
         this.chat = other.chat;
         this.sender = other.sender;
