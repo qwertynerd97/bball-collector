@@ -114,7 +114,6 @@ public class Card implements Parcelable{
     public Card(Parcel in){
         String[] data= new String[12];
         in.readStringArray(data);
-
         uuid = data[0];
         owner = data[1];
         name = data[2];
@@ -221,7 +220,7 @@ public class Card implements Parcelable{
      */
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        String[] data = new String[11];
+        String[] data = new String[12];
 
         data[0] = uuid;
         data[0] = owner;

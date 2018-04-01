@@ -26,7 +26,7 @@ public class DrawerListener implements NavigationView.OnNavigationItemSelectedLi
         int id = item.getItemId();
 
         if (id == R.id.nav_collection) {
-            context.startActivity(new Intent(context, NewTradeActivity.class));
+            context.startActivity(new Intent(context, CardListActivity.class));
         } else if (id == R.id.nav_wishlist) {
             context.startActivity(new Intent(context, WishlistActivity.class));
         } else if (id == R.id.nav_profile) {
