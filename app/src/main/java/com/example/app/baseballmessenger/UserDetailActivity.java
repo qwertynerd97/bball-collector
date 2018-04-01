@@ -54,8 +54,8 @@ public class UserDetailActivity extends AppCompatActivity {
         tradeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i=new Intent(UserDetailActivity.this,SingleTradeActivity.class);
-                i.putExtra("tradingWith", data);
+                Intent i=new Intent(UserDetailActivity.this, NewTradeActivity.class);
+                i.putExtra("user", data);
                 startActivity(i);
             }
         });

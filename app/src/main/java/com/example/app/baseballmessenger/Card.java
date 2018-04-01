@@ -65,6 +65,12 @@ public class Card implements Parcelable{
     public boolean inCollection;
 
     /**
+     * Indicates whether the card is part of initiated trade proposal and whether or not the card
+     * can be edited, traded or deleted
+     */
+    public boolean lockstatus;
+
+    /**
      * The Parcelable Creator, for passing Cards between Activities
      */
     public static final Parcelable.Creator<Card> CREATOR= new Parcelable.Creator<Card>() {
@@ -97,6 +103,7 @@ public class Card implements Parcelable{
         year = -1;
         dateAcquired = "0/0/00";
         inCollection = false;
+        lockstatus = false;
     }
 
     /**
@@ -105,7 +112,7 @@ public class Card implements Parcelable{
      * @param in The Android Parcel to build the card
      */
     public Card(Parcel in){
-        String[] data= new String[11];
+        String[] data= new String[12];
         in.readStringArray(data);
 
         uuid = data[0];
@@ -119,6 +126,7 @@ public class Card implements Parcelable{
         year = Integer.parseInt(data[8]);
         dateAcquired = data[9];
         inCollection = Boolean.parseBoolean(data[10]);
+        lockstatus = Boolean.parseBoolean(data[11]);
     }
 
     /**
@@ -134,7 +142,7 @@ public class Card implements Parcelable{
      * @param year The year the card was released
      * @param date The date the card was acquired
      */
-    public Card(String uuid, String owner, String name, String cond, int num, String role, String team, double val, int year, String date, boolean coll){
+    public Card(String uuid, String owner, String name, String cond, int num, String role, String team, double val, int year, String date, boolean coll, boolean lock){
         this.uuid = uuid;
         this.owner = owner;
         this.name = name;
@@ -146,6 +154,7 @@ public class Card implements Parcelable{
         this.year = year;
         this.dateAcquired = date;
         this.inCollection = coll;
+        this.lockstatus = lock;
     }
 
     /**
@@ -154,12 +163,13 @@ public class Card implements Parcelable{
      * @param inCollection Where the card is located
      * @param uuid The uuid of the card to retrieve
      */
-    public Card(String user, boolean inCollection, String uuid){
+    public Card(String user, boolean inCollection, String uuid, final MyCallback myCallback){
         DatabaseReference reference = Card.databaseReference(user, inCollection).child(uuid);
         ValueEventListener userListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 Card.this.setValues(dataSnapshot.getValue(Card.class));
+                myCallback.onCallback(Card.this);
             }
             @Override
             public void onCancelled(DatabaseError databaseError) {}
@@ -183,6 +193,7 @@ public class Card implements Parcelable{
         this.year = other.year;
         this.dateAcquired = other.dateAcquired;
         this.inCollection = other.inCollection;
+        this.lockstatus = other.lockstatus;
     }
 
     /**
@@ -213,16 +224,17 @@ public class Card implements Parcelable{
         String[] data = new String[11];
 
         data[0] = uuid;
-        data[1] = owner;
-        data[2] = name;
-        data[3] = condition;
-        data[4] = number + "";
-        data[5] = role;
-        data[6] = team;
-        data[7] = value + "";
-        data[8] = year + "";
-        data[9] = dateAcquired;
-        data[10] = inCollection + "";
+        data[0] = owner;
+        data[0] = name;
+        data[0] = condition;
+        data[0] = number + "";
+        data[0] = role;
+        data[0] = team;
+        data[0] = value + "";
+        data[0] = year + "";
+        data[0] = dateAcquired;
+        data[0] = inCollection + "";
+        data[0] = lockstatus + "";
 
         dest.writeStringArray(data);
     }
@@ -254,5 +266,13 @@ public class Card implements Parcelable{
     public static DatabaseReference databaseReference(String user, boolean collection){
         String location = (collection ? "collection" : "wishlist");
         return FirebaseDatabase.getInstance().getReference("cards").child(user).child(location);
+    }
+
+    /**
+     * Removes the card from database from uuid
+     */
+    public static void deleteCard(String user, boolean inCollection, String uuid){
+        DatabaseReference reference = Card.databaseReference(user, inCollection).child(uuid);
+        reference.removeValue();
     }
 }

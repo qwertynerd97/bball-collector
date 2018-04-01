@@ -77,7 +77,7 @@ public class LoginActivity extends AppCompatActivity {
                                     Log.d("Error Result","Tried to auth");
                                     if (task.isSuccessful())
                                     {
-                                        Log.d("Error Result","Auth sucessful");
+                                        Log.d("Error Result","Auth successful");
                                         sharedPref.edit().putString("user_email",email).putString("user_password",pass).apply();
                                         FirebaseDatabase.getInstance().getReference("users").child(mAuth.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
                                             @Override
@@ -89,11 +89,11 @@ public class LoginActivity extends AppCompatActivity {
 
                                             }
                                         });
-                                        UserDetails.currentUser = mAuth.getCurrentUser(); //Store current user data (Uid, email address, etc.)
+                                        //UserDetails.currentUser = mAuth.getCurrentUser(); //Store current user data (Uid, email address, etc.)
                                         startActivity(new Intent(LoginActivity.this, SearchUsersActivity.class));
                                     } else {
                                         Log.d("Error Result","Auth failed");
-                                        Toast.makeText(LoginActivity.this, "Authentication failed.",
+                                        Toast.makeText(LoginActivity.this, String.format("Login failed: %s", task.getException().getMessage()),
                                                 Toast.LENGTH_LONG).show();
                                     }
                                 }
@@ -126,7 +126,7 @@ public class LoginActivity extends AppCompatActivity {
 
                                     }
                                 });
-                                UserDetails.currentUser = mAuth.getCurrentUser(); //Store current user data (Uid, email address, etc.)
+                                //UserDetails.currentUser = mAuth.getCurrentUser(); //Store current user data (Uid, email address, etc.)
                                 startActivity(new Intent(LoginActivity.this, SearchUsersActivity.class));
                             } else {
                                 Log.d("Error Result", "Auth failed");

@@ -24,7 +24,7 @@ public class Trade implements Parcelable {
      */
     public String requestingUser;
     /**
-     * The user that is reciving the trade
+     * The user that is receiving the trade
      */
     public String receivingUser;
     /**
@@ -74,15 +74,15 @@ public class Trade implements Parcelable {
      * Creates a new trade with the given data. This is used when a user requests a new trade
      * @param u The uuid of the trade
      * @param request The requesting user
-     * @param recieve The receiving user
+     * @param receive The receiving user
      * @param sent The sent card
      * @param got The received card
      * @param stat The current status of the trade
      */
-    public Trade(String u, String request, String recieve, String sent, String got, int stat){
+    public Trade(String u, String request, String receive, String sent, String got, int stat){
         uuid = u;
         requestingUser = request;
-        receivingUser = recieve;
+        receivingUser = receive;
         cardSent = sent;
         cardRequested = got;
         status = stat;
@@ -109,12 +109,13 @@ public class Trade implements Parcelable {
      * Get trade from database from uuid
      * @param uuid The uuid of the trade to retrieve
      */
-    public Trade(String uuid){
+    public Trade(String uuid, final MyCallback myCallback){
         DatabaseReference reference = Trade.databaseReference().child(uuid);
         ValueEventListener userListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                Trade.this.setValues(dataSnapshot.getValue(Trade.class));
+                    Trade.this.setValues(dataSnapshot.getValue(Trade.class));
+                    myCallback.onCallback(Trade.this);
             }
             @Override
             public void onCancelled(DatabaseError databaseError) {}
@@ -214,4 +215,14 @@ public class Trade implements Parcelable {
     public static DatabaseReference databaseReference(){
         return FirebaseDatabase.getInstance().getReference("trades");
     }
+
+    /**
+     * Deletes the trade from Firebase
+     */
+    public static void deleteTrade(String uuid){
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
+        reference.child("trades").child(uuid).removeValue();
+    }
 }
+
+
