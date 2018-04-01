@@ -223,17 +223,17 @@ public class Card implements Parcelable{
         String[] data = new String[12];
 
         data[0] = uuid;
-        data[0] = owner;
-        data[0] = name;
-        data[0] = condition;
-        data[0] = number + "";
-        data[0] = role;
-        data[0] = team;
-        data[0] = value + "";
-        data[0] = year + "";
-        data[0] = dateAcquired;
-        data[0] = inCollection + "";
-        data[0] = lockstatus + "";
+        data[1] = owner;
+        data[2] = name;
+        data[3] = condition;
+        data[4] = number + "";
+        data[5] = role;
+        data[6] = team;
+        data[7] = value + "";
+        data[8] = year + "";
+        data[9] = dateAcquired;
+        data[10] = inCollection + "";
+        data[11] = lockstatus + "";
 
         dest.writeStringArray(data);
     }

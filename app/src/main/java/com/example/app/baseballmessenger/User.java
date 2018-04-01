@@ -250,7 +250,7 @@ public class User implements Parcelable {
      * Gets the database location for a particular user
      * @return The Firebase location for the particular user
      */
-    public DatabaseReference getDatabaseReference(){
+    public DatabaseReference dbReference(){
         return FirebaseDatabase.getInstance().getReference("users").child(uuid);
     }
 
