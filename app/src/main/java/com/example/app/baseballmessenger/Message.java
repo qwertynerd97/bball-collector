@@ -116,7 +116,7 @@ public class Message {
      * Gets the database location for a particular message
      * @return The Firebase location for the particular message
      */
-    public DatabaseReference getdatabaseReference(){
+    public DatabaseReference dbReference(){
         return FirebaseDatabase.getInstance().getReference("messages").child(chat).child(uuid);
     }
 

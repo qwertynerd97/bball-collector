@@ -95,7 +95,7 @@ public class RegisterActivity extends AppCompatActivity {
 
                                     } else {
                                         // If sign in fails, display a message to the user.
-                                        Toast.makeText(RegisterActivity.this, "Authentication failed.",
+                                        Toast.makeText(RegisterActivity.this, String.format("Registration failed: %s", task.getException().getMessage()),
                                                 Toast.LENGTH_LONG).show();
                                     }
                                 }

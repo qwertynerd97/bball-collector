@@ -26,7 +26,7 @@ public class DrawerListener implements NavigationView.OnNavigationItemSelectedLi
         int id = item.getItemId();
 
         if (id == R.id.nav_collection) {
-            context.startActivity(new Intent(context, NewTrade.class));
+            context.startActivity(new Intent(context, NewTradeActivity.class));
         } else if (id == R.id.nav_wishlist) {
             context.startActivity(new Intent(context, WishlistActivity.class));
         } else if (id == R.id.nav_profile) {
@@ -34,11 +34,11 @@ public class DrawerListener implements NavigationView.OnNavigationItemSelectedLi
             i.putExtra("user", Handoff.currentUser);
             context.startActivity(i);
         } else if (id == R.id.nav_chat) {
-            context.startActivity(new Intent(context, NewTrade.class));
+            context.startActivity(new Intent(context, ChatListActivity.class));
         } else if (id == R.id.nav_users) {
             context.startActivity(new Intent(context, SearchUsersActivity.class));
         } else if (id == R.id.nav_trade) {
-            context.startActivity(new Intent(context, NewTrade.class));
+            context.startActivity(new Intent(context, TradeListActivity.class));
         }
 
         drawer.closeDrawer(GravityCompat.START);
