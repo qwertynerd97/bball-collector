@@ -75,7 +75,7 @@ public class UserDetailActivity extends AppCompatActivity {
         data = getIntent().getParcelableExtra("user");
 
         Log.d("User Detail",data.toString());
-        Log.d("User Detail",Handoff.currentUser.toString());
+        Log.d("User Detail", Handoff.currentUser.toString());
 
         // Set up visibility for current user vs other cards
         if(data.uuid.equals(Handoff.currentUser.uuid)){

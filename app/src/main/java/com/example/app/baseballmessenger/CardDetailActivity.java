@@ -43,7 +43,7 @@ public class CardDetailActivity extends AppCompatActivity {
         condition.setText(data.condition + "");
 
         TextView number = findViewById(R.id.number);
-        number.setText(data.number);
+        number.setText(data.number + "");
 
         TextView role = findViewById(R.id.role);
         role.setText(data.role + "");
