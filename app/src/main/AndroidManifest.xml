@@ -26,8 +26,8 @@
         <activity android:name=".NewTradeActivity" />
         <activity android:name=".SelectCardsActivity" />
         <activity android:name=".ChatListActivity" />
-        <activity android:name=".CardListActivity"/>
-        <activity android:name=".CardDetailActivity"/>
+        <activity android:name=".CardListActivity" />
+        <activity android:name=".CardDetailActivity" />
 
         <meta-data
             android:name="preloaded_fonts"
@@ -40,7 +40,12 @@
         <activity
             android:name=".WishlistActivity"
             android:label="@string/title_activity_wishlist"
-            android:theme="@style/AppTheme"></activity>
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name=".AddCardActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:label="@string/title_activity_add_card"
+            android:theme="@style/FullscreenTheme"></activity>
     </application>
 
 </manifest>

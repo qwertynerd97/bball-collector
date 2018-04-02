@@ -13,7 +13,9 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.GridView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -35,11 +37,13 @@ public class CardListActivity extends AppCompatActivity {
     private Toolbar toolbar;
     private GridView cardScroll;
     private CardAdapter adapter;
+    private TextView noCardsView;
     private ArrayList<Card> cards = new ArrayList<Card>();
     private FirebaseAuth mAuth;
     private DatabaseReference reference;
     private Context mContext = this;
     private String previousActivity = "";
+    private Button addCardButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,24 +67,40 @@ public class CardListActivity extends AppCompatActivity {
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(listen);
 
+        // Set up the Add New Card button
+        addCardButton = (Button)findViewById(R.id.addCardButton);
+        addCardButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                // Code here executes on main thread after user presses button
+                Intent i = new Intent(CardListActivity.this, AddCardActivity.class);
+                i.putExtra("isCollection", true);
+                startActivity(i);
+            }
+        });
 
         // Set up pretty card scroll
         cardScroll = (GridView) findViewById(R.id.card_scroll);
         cardScroll.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View v,
                                     int position, long id) {
+                // Executed when an item on the grid view is clicked
                 Intent i=new Intent(CardListActivity.this, CardDetailActivity.class);
                 i.putExtra("card", cards.get(position));
                 startActivity(i);
             }
         });
 
+        // Set the thing to show when the GridView is empty
+        noCardsView = (TextView) findViewById(R.id.noCardsText);
+        cardScroll.setEmptyView(noCardsView);
+
         // Set up list of Cards
         cards = new ArrayList<Card>();
 
         // Set up Firebase
         mAuth = FirebaseAuth.getInstance();
-        reference = Card.databaseReference(Handoff.currentUser.uuid, true);
+
+        reference = Card.databaseReference(FirebaseAuth.getInstance().getCurrentUser().getUid(), true);
 
         reference.addValueEventListener(new ValueEventListener() {
             @Override
