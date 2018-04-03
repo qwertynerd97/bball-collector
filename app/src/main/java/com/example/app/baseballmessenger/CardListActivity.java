@@ -30,6 +30,10 @@ import java.util.ArrayList;
 
 /**
  * Created by pr4h6n on 4/1/18.
+ * The CardListActivity is responsible for displaying a list of cards to the user.
+ * These can either be from the wishlist, or from the card collection.
+ * The following bundle data is supplied:
+ *      "wishlist" - boolean - True if we're looking at the wishlist, False otherwise
  */
 
 public class CardListActivity extends AppCompatActivity {
@@ -45,10 +49,23 @@ public class CardListActivity extends AppCompatActivity {
     private String previousActivity = "";
     private Button addCardButton;
 
+    private boolean isWishlist;
+    private static final String noCardsInCollectionString = "There are no cards in your collection. Perhaps you would like to add one?";
+    private static final String noCardsInWishlistString = "There are no cards in your wishlist. Perhaps you would like to add one?";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cards);
+
+        if(savedInstanceState == null)
+        {
+            isWishlist = getIntent().getBooleanExtra("wishlist", false);
+        }
+        else
+        {
+            isWishlist = savedInstanceState.getBoolean("wishlist");
+        }
 
         previousActivity = getIntent().getStringExtra("previous_activity");
 
@@ -73,7 +90,7 @@ public class CardListActivity extends AppCompatActivity {
             public void onClick(View v) {
                 // Code here executes on main thread after user presses button
                 Intent i = new Intent(CardListActivity.this, AddCardActivity.class);
-                i.putExtra("isCollection", true);
+                i.putExtra("wishlist", isWishlist);
                 startActivity(i);
             }
         });
@@ -86,12 +103,21 @@ public class CardListActivity extends AppCompatActivity {
                 // Executed when an item on the grid view is clicked
                 Intent i=new Intent(CardListActivity.this, CardDetailActivity.class);
                 i.putExtra("card", cards.get(position));
+                i.putExtra("wishlist", isWishlist);
                 startActivity(i);
             }
         });
 
         // Set the thing to show when the GridView is empty
         noCardsView = (TextView) findViewById(R.id.noCardsText);
+        if(isWishlist)
+        {   // use the wishlist text
+            noCardsView.setText(noCardsInWishlistString);
+        }
+        else
+        {   // use the collection text
+            noCardsView.setText(noCardsInCollectionString);
+        }
         cardScroll.setEmptyView(noCardsView);
 
         // Set up list of Cards
@@ -100,7 +126,7 @@ public class CardListActivity extends AppCompatActivity {
         // Set up Firebase
         mAuth = FirebaseAuth.getInstance();
 
-        reference = Card.databaseReference(FirebaseAuth.getInstance().getCurrentUser().getUid(), true);
+        reference = Card.databaseReference(FirebaseAuth.getInstance().getCurrentUser().getUid(), !isWishlist);
 
         reference.addValueEventListener(new ValueEventListener() {
             @Override
