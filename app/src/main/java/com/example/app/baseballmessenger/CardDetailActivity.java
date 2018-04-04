@@ -1,5 +1,7 @@
 package com.example.app.baseballmessenger;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -112,7 +114,34 @@ public class CardDetailActivity extends AppCompatActivity {
 
             deletebutton.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
-                    // TODO: action on delete button
+                    AlertDialog alertDialog = new AlertDialog.Builder(CardDetailActivity.this).create();
+                    alertDialog.setTitle("Delete Card?");
+                    alertDialog.setMessage("Are you sure you want to delete this card? This action cannot be undone.");
+                    alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "Delete",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    // Called when clicking the DELETE button on the modal dialog
+                                    // Dismiss the dialog
+                                    dialog.dismiss();
+
+                                    // Tell the card to go away
+                                    Card.deleteCard(data.owner, !isWishlist, data.uuid);
+
+                                    // Go to the card list activity
+                                    Intent i = new Intent(CardDetailActivity.this, CardListActivity.class);
+                                    i.putExtra("wishlist", isWishlist);
+                                    startActivity(i);
+                                }
+                            });
+                    alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, "Cancel",
+                            new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    // Called when clicking CANCEL on the modal dialog (just dismiss it)
+                                    dialog.dismiss();
+                                }
+                            });
+                    alertDialog.show();
                 }
             });
         }
