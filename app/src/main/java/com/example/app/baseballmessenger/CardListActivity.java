@@ -51,6 +51,8 @@ public class CardListActivity extends AppCompatActivity {
     private boolean isWishlist;
     private static final String noCardsInCollectionString = "There are no cards in your collection. Perhaps you would like to add one?";
     private static final String noCardsInWishlistString = "There are no cards in your wishlist. Perhaps you would like to add one?";
+    private static final String wishlistTitle = "My Wishlist";
+    private static final String collectionTitle = "My Collection";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,38 +88,27 @@ public class CardListActivity extends AppCompatActivity {
         addCardButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 // Code here executes on main thread after user presses button
-                Intent i = new Intent(CardListActivity.this, AddCardActivity.class);
+                Intent i = new Intent(CardListActivity.this, AddEditCardActivity.class);
                 i.putExtra("wishlist", isWishlist);
-                startActivity(i);
-            }
-        });
-
-        // Set up pretty card scroll
-        cardScroll = (GridView) findViewById(R.id.card_scroll);
-        cardScroll.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            public void onItemClick(AdapterView<?> parent, View v,
-                                    int position, long id) {
-                // Executed when an item on the grid view is clicked
-                Intent i=new Intent(CardListActivity.this, CardDetailActivity.class);
-                i.putExtra("card", cards.get(position));
-                i.putExtra("wishlist", isWishlist);
+                i.putExtra("add", true);
                 startActivity(i);
             }
         });
 
 
-        // Set up list of Cards
-        cards = new ArrayList<Card>();
 
         // Set the thing to show when the GridView is empty
+        cardScroll = (GridView) findViewById(R.id.card_scroll);
         noCardsView = (TextView) findViewById(R.id.noCardsText);
         if(isWishlist)
-        {   // use the wishlist text
+        {   // use the wishlist text and title
             noCardsView.setText(noCardsInWishlistString);
+            setTitle(wishlistTitle);
         }
         else
-        {   // use the collection text
+        {   // use the collection text and title
             noCardsView.setText(noCardsInCollectionString);
+            setTitle(collectionTitle);
         }
         cardScroll.setEmptyView(noCardsView);
         adapter = new CardAdapter(CardListActivity.this, R.layout.card_thumbnail, cards);
@@ -132,9 +123,14 @@ public class CardListActivity extends AppCompatActivity {
 
         ChildEventListener userListener = new ChildEventListener() {
             @Override
-            public void onChildAdded(DataSnapshot dataSnapshot, String previousChildName) {
-                Log.d("User added", "onChildAdded:" + dataSnapshot.getKey());
-                cards.add(dataSnapshot.getValue(Card.class));
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for(DataSnapshot cardSnapshot:dataSnapshot.getChildren())
+                {
+                    cards.add(cardSnapshot.getValue(Card.class));
+                }
+                Log.d("Search Cards","there are " + cards.size());
+
+                adapter = new CardAdapter(CardListActivity.this, R.layout.card_thumbnail, cards);
                 adapter.notifyDataSetChanged();
             }
 
@@ -148,20 +144,18 @@ public class CardListActivity extends AppCompatActivity {
                 // Users cannot ever be deleted
             }
 
-            @Override
-            public void onChildMoved(DataSnapshot dataSnapshot, String previousChildName) {
-                // Users dont move
-            }
+        // Set up pretty card scroll
 
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                Log.w("User Search", "loadPost:onCancelled", databaseError.toException());
-                Toast.makeText(mContext, "Failed to load users.",
-                        Toast.LENGTH_SHORT).show();
+        cardScroll.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            public void onItemClick(AdapterView<?> parent, View v,
+                                    int position, long id) {
+                // Executed when an item on the grid view is clicked
+                Intent i=new Intent(CardListActivity.this, CardDetailActivity.class);
+                i.putExtra("card", cards.get(position));
+                i.putExtra("wishlist", isWishlist);
+                startActivity(i);
             }
-        };
-        q.addChildEventListener(userListener);
-
+        });
     }
 
 }

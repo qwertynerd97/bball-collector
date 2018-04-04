@@ -216,6 +216,12 @@ public class Trade implements Parcelable {
         return FirebaseDatabase.getInstance().getReference("trades");
     }
 
+    public String generateUUID()
+    {
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
+        return reference.child("trades").push().getKey();
+    }
+
     /**
      * Deletes the trade from Firebase
      */

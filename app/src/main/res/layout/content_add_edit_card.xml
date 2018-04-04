@@ -1,0 +1,313 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="com.example.app.baseballmessenger.AddEditCardActivity"
+    tools:showIn="@layout/activity_add_edit_card">
+
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
+            <android.support.constraint.ConstraintLayout
+                android:id="@+id/imagePart"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:minHeight="211dp">
+
+                <ImageView
+                    android:id="@+id/cardImage"
+                    android:layout_width="161dp"
+                    android:layout_height="136dp"
+                    android:layout_margin="16dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="220dp"
+                    android:contentDescription="profile image"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@drawable/ic_user" />
+
+                <Button
+                    android:id="@+id/chooseImageButton"
+                    android:layout_width="129dp"
+                    android:layout_height="46dp"
+                    android:layout_marginStart="40dp"
+                    android:layout_marginTop="88dp"
+                    android:text="Choose Image"
+                    app:layout_constraintStart_toEndOf="@+id/cardImage"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </android.support.constraint.ConstraintLayout>
+
+            <LinearLayout
+                android:id="@+id/cardName"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:padding="6dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/cardNameView"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:text="Name: "
+                        app:layout_constraintStart_toEndOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/cardImage" />
+
+                    <EditText
+                        android:id="@+id/nameEntry"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:fontFamily="@font/source_sans_pro"
+                        android:hint="Name"
+                        android:inputType="text"
+                        android:maxLines="1"
+                        android:textColor="@android:color/background_dark"
+                        app:layout_constraintStart_toEndOf="@+id/cardNameView"
+                        app:layout_constraintTop_toBottomOf="@+id/cardImage" />
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/value"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:padding="6dp">
+
+                <TextView
+                    android:id="@+id/valueView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:text="Value: "
+                    app:layout_constraintStart_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/teamView" />
+
+                <EditText
+                    android:id="@+id/valueEntry"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/source_sans_pro"
+                    android:hint="Value"
+                    android:inputType="numberDecimal"
+                    android:maxLines="1"
+                    android:textColor="@android:color/background_dark"
+                    app:layout_constraintStart_toEndOf="@+id/valueView"
+                    app:layout_constraintTop_toBottomOf="@+id/teamEntry" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/dateAcquired"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:padding="6dp">
+
+                <TextView
+                    android:id="@+id/dateView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:text="Date Acquired: "
+                    app:layout_constraintStart_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/valueView" />
+
+                <EditText
+                    android:id="@+id/dateEntry"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/source_sans_pro"
+                    android:hint="Date"
+                    android:inputType="date"
+                    android:maxLines="1"
+                    android:textColor="@android:color/background_dark"
+                    app:layout_constraintStart_toEndOf="@+id/dateView"
+                    app:layout_constraintTop_toBottomOf="@+id/valueEntry" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/condition"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:padding="6dp">
+
+                <TextView
+                    android:id="@+id/conditionView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:text="Condition: "
+                    app:layout_constraintStart_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/roleView" />
+
+                <EditText
+                    android:id="@+id/conditionEntry"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/source_sans_pro"
+                    android:hint="Condition"
+                    android:inputType="text"
+                    android:maxLines="1"
+                    android:textColor="@android:color/background_dark"
+                    app:layout_constraintStart_toEndOf="@+id/conditionView"
+                    app:layout_constraintTop_toBottomOf="@+id/roleEntry" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/year"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:padding="6dp">
+
+                <TextView
+                    android:id="@+id/yearView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:text="Year: "
+                    app:layout_constraintStart_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/numberView" />
+
+                <EditText
+                    android:id="@+id/yearEntry"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/source_sans_pro"
+                    android:hint="Year"
+                    android:inputType="number"
+                    android:maxLines="1"
+                    android:textColor="@android:color/background_dark"
+                    app:layout_constraintStart_toEndOf="@+id/yearView"
+                    app:layout_constraintTop_toBottomOf="@+id/numberEntry" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/team"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:padding="6dp">
+
+                <TextView
+                    android:id="@+id/teamView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:text="Team: "
+                    app:layout_constraintStart_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/yearView" />
+
+                <EditText
+                    android:id="@+id/teamEntry"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/source_sans_pro"
+                    android:hint="Team"
+                    android:inputType="text"
+                    android:maxLines="1"
+                    android:textColor="@android:color/background_dark"
+                    app:layout_constraintStart_toEndOf="@+id/teamView"
+                    app:layout_constraintTop_toBottomOf="@+id/yearEntry" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/number"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:padding="6dp">
+
+                <TextView
+                    android:id="@+id/numberView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:text="Number: "
+                    app:layout_constraintStart_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/conditionView" />
+
+                <EditText
+                    android:id="@+id/numberEntry"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/source_sans_pro"
+                    android:hint="Number"
+                    android:inputType="number"
+                    android:maxLines="1"
+                    android:textColor="@android:color/background_dark"
+                    app:layout_constraintStart_toEndOf="@+id/numberView"
+                    app:layout_constraintTop_toBottomOf="@+id/conditionEntry" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/role"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:padding="6dp">
+
+                <TextView
+                    android:id="@+id/roleView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:text="Role: "
+                    app:layout_constraintStart_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/playerView" />
+
+                <EditText
+                    android:id="@+id/roleEntry"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/source_sans_pro"
+                    android:hint="Role"
+                    android:inputType="text"
+                    android:maxLines="1"
+                    android:textColor="@android:color/background_dark"
+                    app:layout_constraintStart_toEndOf="@+id/roleView"
+                    app:layout_constraintTop_toBottomOf="@+id/playerEntry" />
+
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/saveButton"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:text="Save Card"
+                app:layout_constraintStart_toEndOf="@+id/cardImage"
+                app:layout_constraintTop_toBottomOf="@+id/chooseImageButton" />
+
+        </LinearLayout>
+    </ScrollView>
+
+
+</android.support.constraint.ConstraintLayout>

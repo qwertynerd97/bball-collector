@@ -22,6 +22,30 @@
         app:srcCompat="@drawable/ic_user" />
 
 
+    <Button
+        android:id="@+id/editCard"
+        android:layout_width="120dp"
+        android:layout_height="57dp"
+        android:layout_marginStart="28dp"
+        android:layout_marginTop="44dp"
+        android:text="Edit Card"
+        app:layout_constraintStart_toEndOf="@+id/cardImage"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/deleteCard"
+        android:layout_width="104dp"
+        android:layout_height="53dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginStart="28dp"
+        android:layout_marginTop="8dp"
+        android:background="@android:color/holo_red_light"
+        android:text="Delete Card"
+        app:layout_constraintBottom_toBottomOf="@+id/cardName"
+        app:layout_constraintStart_toEndOf="@+id/cardImage"
+        app:layout_constraintTop_toBottomOf="@+id/editCard"
+        app:layout_constraintVertical_bias="0.0" />
+
     <TextView
         android:id="@+id/cardNameView"
         android:layout_width="wrap_content"
@@ -38,7 +62,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
         android:layout_marginTop="16dp"
-        android:text="d"
+        android:text=""
         app:layout_constraintStart_toEndOf="@+id/cardNameView"
         app:layout_constraintTop_toBottomOf="@+id/cardImage" />
 
@@ -62,25 +86,6 @@
         app:layout_constraintTop_toBottomOf="@+id/cardName" />
 
     <TextView
-        android:id="@+id/playerView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="16dp"
-        android:text="Player: "
-        app:layout_constraintStart_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ownerView" />
-
-    <TextView
-        android:id="@+id/player"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="0"
-        app:layout_constraintStart_toEndOf="@+id/playerView"
-        app:layout_constraintTop_toBottomOf="@+id/owner" />
-
-    <TextView
         android:id="@+id/roleView"
         android:layout_width="wrap_content"
         android:layout_height="17dp"
@@ -88,7 +93,7 @@
         android:layout_marginTop="16dp"
         android:text="Role: "
         app:layout_constraintStart_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/playerView" />
+        app:layout_constraintTop_toBottomOf="@+id/ownerView" />
 
     <TextView
         android:id="@+id/role"
@@ -97,7 +102,7 @@
         android:layout_marginTop="16dp"
         android:text="0"
         app:layout_constraintStart_toEndOf="@+id/roleView"
-        app:layout_constraintTop_toBottomOf="@+id/playerView" />
+        app:layout_constraintTop_toBottomOf="@+id/ownerView" />
 
     <TextView
         android:id="@+id/conditionView"
@@ -184,7 +189,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
         android:layout_marginTop="16dp"
-        android:text="Number: "
+        android:text="Value: "
         app:layout_constraintStart_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/teamView" />
 

@@ -45,7 +45,11 @@
             android:name=".AddCardActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="@string/title_activity_add_card"
-            android:theme="@style/FullscreenTheme"></activity>
+            android:theme="@style/FullscreenTheme" />
+        <activity
+            android:name=".AddEditCardActivity"
+            android:label="@string/title_activity_add_edit_card"
+            android:theme="@style/AppTheme"></activity>
     </application>
 
 </manifest>
