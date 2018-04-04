@@ -129,7 +129,6 @@ public class CardListActivity extends AppCompatActivity {
                 for(DataSnapshot cardSnapshot:dataSnapshot.getChildren())
                 {
                     cards.add(cardSnapshot.getValue(Card.class));
-                    System.out.println(cardSnapshot.getValue());
                 }
                 Log.d("Search Cards","there are " + cards.size());
 

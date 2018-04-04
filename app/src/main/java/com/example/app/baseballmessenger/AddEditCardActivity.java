@@ -68,8 +68,6 @@ public class AddEditCardActivity extends AppCompatActivity {
     protected void showTextViews(int visibility)
     {
         nameView.setVisibility(visibility);
-        ownerView.setVisibility(visibility);
-        playerView.setVisibility(visibility);
         roleView.setVisibility(visibility);
         conditionView.setVisibility(visibility);
         numberView.setVisibility(visibility);
@@ -82,7 +80,7 @@ public class AddEditCardActivity extends AppCompatActivity {
     protected void fillCardData(Card data)
     {
         data.name = nameEntry.getText().toString();
-        data.owner = ownerEntry.getText().toString();
+        data.owner = Handoff.currentUser.uuid;
         data.name = playerEntry.getText().toString();
         data.role = roleEntry.getText().toString();
         data.condition = conditionEntry.getText().toString();
@@ -117,7 +115,6 @@ public class AddEditCardActivity extends AppCompatActivity {
         chooseImageButton = findViewById(R.id.chooseImageButton);
         saveCardButton = findViewById(R.id.saveButton);
         nameEntry = findViewById(R.id.nameEntry);
-        ownerEntry = findViewById(R.id.ownerEntry);
         playerEntry = findViewById(R.id.playerEntry);
         roleEntry = findViewById(R.id.roleEntry);
         conditionEntry = findViewById(R.id.conditionEntry);
@@ -198,10 +195,9 @@ public class AddEditCardActivity extends AppCompatActivity {
 
             nameEntry.setText(data.name);
             ownerEntry.setText(data.owner);
-            playerEntry.setText(data.name); // FIXME: ??
             roleEntry.setText(data.role);
             conditionEntry.setText(data.condition);
-            numberEntry.setText(data.number);
+            numberEntry.setText(Integer.toString(data.number));
             yearEntry.setText(Integer.toString(data.year));
             teamEntry.setText(data.team);
             valueEntry.setText(Double.toString(data.value));
@@ -234,21 +230,24 @@ public class AddEditCardActivity extends AppCompatActivity {
             // Don't show the labels if we're in Create view
             showTextViews(View.GONE);
 
-            // The Save Card button will be triggereing an Edit action, not a New Card action.
+            // The Save Card button will be triggering an Edit action, not a New Card action.
             saveCardButton.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
                     // Create Card
-                    DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
-                    Card newCard = new Card(ref.push().getKey(), ownerEntry.getText().toString(),
-                            nameEntry.getText().toString(), conditionEntry.getText().toString(),
-                            Integer.parseInt(numberEntry.getText().toString()),
-                            roleEntry.getText().toString(), teamEntry.getText().toString(),
-                            Double.parseDouble(valueEntry.getText().toString()),
-                            Integer.parseInt(yearEntry.getText().toString()),
-                            dateEntry.getText().toString(),
-                            !isWishlist, false);
-                    newCard.updateFirebase();
-
+                    Card c = new Card("", Handoff.currentUser.uuid,"","", 0, "", "", 0.0, 0, "", true, false);
+                    c.uuid = c.generateUUID();
+                    c.owner = Handoff.currentUser.uuid;
+                    c.condition = conditionEntry.getText().toString();
+                    c.role = roleEntry.getText().toString();
+                    c.number = Integer.parseInt(numberEntry.getText().toString());
+                    c.dateAcquired = dateEntry.getText().toString();
+                    c.year = Integer.parseInt(yearEntry.getText().toString());
+                    c.team = teamEntry.getText().toString();
+                    c.name = nameEntry.getText().toString();
+                    c.value = Double.parseDouble(valueEntry.getText().toString());
+                    c.lockstatus = false;
+                    c.inCollection = !isWishlist;
+                    c.updateFirebase();
 
                     // Go to card list
                     Intent i=new Intent(AddEditCardActivity.this, CardListActivity.class);

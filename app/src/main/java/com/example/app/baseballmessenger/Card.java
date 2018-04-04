@@ -204,6 +204,13 @@ public class Card implements Parcelable{
         reference.child("cards").child(owner).child(location).child(uuid).setValue(this);
     }
 
+    public String generateUUID()
+    {
+        String location = (inCollection ? "collection" : "wishlist");
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
+        return reference.child("cards").child(owner).child(location).child(uuid).push().getKey();
+    }
+
     /**
      * Describes the parcelable contents as an integer
      * @return 0

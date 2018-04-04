@@ -1,6 +1,7 @@
 package com.example.app.baseballmessenger;
 
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -36,7 +37,6 @@ public class CardDetailActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         data = getIntent().getExtras().getParcelable("card");
-        //data = getIntent().getParcelableExtra("card"); //TODO This is null for some reason... don't know why bc i.putParcelableExtra() is passed a non-null value
 
         TextView cardName = findViewById(R.id.cardName);
         cardName.setText(data.name);
@@ -45,7 +45,16 @@ public class CardDetailActivity extends AppCompatActivity {
         value.setText(data.value + "");
 
         TextView owner = findViewById(R.id.owner);
+        TextView ownerHeader = findViewById(R.id.ownerView);
         owner.setText(data.owner + "");
+
+        if(data.owner.equals(Handoff.currentUser.uuid))
+        {
+            String location = data.inCollection ? "your collection.":"your wishlist.";
+            owner.setVisibility(View.GONE);
+            ownerHeader.setText("This card is currently in " + location);
+
+        }
 
         TextView condition = findViewById(R.id.condition);
         condition.setText(data.condition + "");

@@ -62,7 +62,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
         android:layout_marginTop="16dp"
-        android:text="d"
+        android:text=""
         app:layout_constraintStart_toEndOf="@+id/cardNameView"
         app:layout_constraintTop_toBottomOf="@+id/cardImage" />
 
@@ -86,25 +86,6 @@
         app:layout_constraintTop_toBottomOf="@+id/cardName" />
 
     <TextView
-        android:id="@+id/playerView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="16dp"
-        android:text="Player: "
-        app:layout_constraintStart_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ownerView" />
-
-    <TextView
-        android:id="@+id/player"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="0"
-        app:layout_constraintStart_toEndOf="@+id/playerView"
-        app:layout_constraintTop_toBottomOf="@+id/owner" />
-
-    <TextView
         android:id="@+id/roleView"
         android:layout_width="wrap_content"
         android:layout_height="17dp"
@@ -112,7 +93,7 @@
         android:layout_marginTop="16dp"
         android:text="Role: "
         app:layout_constraintStart_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/playerView" />
+        app:layout_constraintTop_toBottomOf="@+id/ownerView" />
 
     <TextView
         android:id="@+id/role"
@@ -121,7 +102,7 @@
         android:layout_marginTop="16dp"
         android:text="0"
         app:layout_constraintStart_toEndOf="@+id/roleView"
-        app:layout_constraintTop_toBottomOf="@+id/playerView" />
+        app:layout_constraintTop_toBottomOf="@+id/ownerView" />
 
     <TextView
         android:id="@+id/conditionView"
@@ -208,7 +189,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
         android:layout_marginTop="16dp"
-        android:text="Number: "
+        android:text="Value: "
         app:layout_constraintStart_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/teamView" />
 

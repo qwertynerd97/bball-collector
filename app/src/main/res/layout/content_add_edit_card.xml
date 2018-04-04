@@ -117,36 +117,6 @@
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/player"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="horizontal"
-                android:padding="6dp">
-
-                <TextView
-                    android:id="@+id/playerView"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:text="Player: "
-                    app:layout_constraintStart_toEndOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/ownerView" />
-
-                <EditText
-                    android:id="@+id/playerEntry"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:fontFamily="@font/source_sans_pro"
-                    android:hint="Player Name"
-                    android:inputType="text"
-                    android:maxLines="1"
-                    android:textColor="@android:color/background_dark"
-                    app:layout_constraintStart_toEndOf="@+id/playerView"
-                    app:layout_constraintTop_toBottomOf="@+id/ownerEntry" />
-            </LinearLayout>
-
-            <LinearLayout
                 android:id="@+id/dateAcquired"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -326,36 +296,6 @@
                     app:layout_constraintStart_toEndOf="@+id/roleView"
                     app:layout_constraintTop_toBottomOf="@+id/playerEntry" />
 
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/owner"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="horizontal"
-                android:padding="6dp">
-
-                <TextView
-                    android:id="@+id/ownerView"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:text="Owner: "
-                    app:layout_constraintStart_toEndOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/cardNameView" />
-
-                <EditText
-                    android:id="@+id/ownerEntry"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:fontFamily="@font/source_sans_pro"
-                    android:hint="Owner"
-                    android:inputType="text"
-                    android:maxLines="1"
-                    android:textColor="@android:color/background_dark"
-                    app:layout_constraintStart_toEndOf="@+id/ownerView"
-                    app:layout_constraintTop_toBottomOf="@+id/nameEntry" />
             </LinearLayout>
 
             <Button
