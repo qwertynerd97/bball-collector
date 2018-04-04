@@ -24,21 +24,28 @@ public class DrawerListener implements NavigationView.OnNavigationItemSelectedLi
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
+        Intent i = null;
 
         if (id == R.id.nav_collection) {
-            context.startActivity(new Intent(context, NewTradeActivity.class));
+            i = new Intent(context, CardListActivity.class);
+            i.putExtra("wishlist", false);
         } else if (id == R.id.nav_wishlist) {
-            context.startActivity(new Intent(context, WishlistActivity.class));
+            i = new Intent(context, CardListActivity.class);
+            i.putExtra("wishlist", true);
         } else if (id == R.id.nav_profile) {
-            Intent i=new Intent(context,UserDetailActivity.class);
+            i = new Intent(context, UserDetailActivity.class);
             i.putExtra("user", Handoff.currentUser);
-            context.startActivity(i);
         } else if (id == R.id.nav_chat) {
-            context.startActivity(new Intent(context, ChatListActivity.class));
+            i = new Intent(context, ChatListActivity.class);
         } else if (id == R.id.nav_users) {
-            context.startActivity(new Intent(context, SearchUsersActivity.class));
+            i = new Intent(context, SearchUsersActivity.class);
         } else if (id == R.id.nav_trade) {
-            context.startActivity(new Intent(context, TradeListActivity.class));
+            i = new Intent(context, TradeListActivity.class);
+        }
+
+        if(i != null)
+        {
+            context.startActivity(i);
         }
 
         drawer.closeDrawer(GravityCompat.START);

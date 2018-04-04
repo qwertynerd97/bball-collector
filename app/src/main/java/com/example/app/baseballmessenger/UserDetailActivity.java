@@ -74,6 +74,7 @@ public class UserDetailActivity extends AppCompatActivity {
 
         data = getIntent().getParcelableExtra("user");
 
+        Log.d("User Detail",Handoff.currentUser + "");
         Log.d("User Detail",data.toString());
         Log.d("User Detail", Handoff.currentUser.toString());
 
