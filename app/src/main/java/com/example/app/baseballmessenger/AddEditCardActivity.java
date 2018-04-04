@@ -37,8 +37,6 @@ public class AddEditCardActivity extends AppCompatActivity {
     private Button chooseImageButton;
     private Button saveCardButton;
     private EditText nameEntry;
-    private EditText ownerEntry;
-    private EditText playerEntry;
     private EditText roleEntry;
     private EditText conditionEntry;
     private EditText numberEntry;
@@ -48,8 +46,6 @@ public class AddEditCardActivity extends AppCompatActivity {
     private EditText dateEntry;
 
     private TextView nameView;
-    private TextView ownerView;
-    private TextView playerView;
     private TextView roleView;
     private TextView conditionView;
     private TextView numberView;
@@ -81,7 +77,6 @@ public class AddEditCardActivity extends AppCompatActivity {
     {
         data.name = nameEntry.getText().toString();
         data.owner = Handoff.currentUser.uuid;
-        data.name = playerEntry.getText().toString();
         data.role = roleEntry.getText().toString();
         data.condition = conditionEntry.getText().toString();
         data.number = Integer.parseInt(numberEntry.getText().toString());
@@ -100,8 +95,6 @@ public class AddEditCardActivity extends AppCompatActivity {
 
         // Bind all of the text elements
         nameView = findViewById(R.id.cardNameView);
-        ownerView = findViewById(R.id.ownerView);
-        playerView = findViewById(R.id.playerView);
         roleView = findViewById(R.id.roleView);
         conditionView = findViewById(R.id.conditionView);
         numberView = findViewById(R.id.numberView);
@@ -115,7 +108,6 @@ public class AddEditCardActivity extends AppCompatActivity {
         chooseImageButton = findViewById(R.id.chooseImageButton);
         saveCardButton = findViewById(R.id.saveButton);
         nameEntry = findViewById(R.id.nameEntry);
-        playerEntry = findViewById(R.id.playerEntry);
         roleEntry = findViewById(R.id.roleEntry);
         conditionEntry = findViewById(R.id.conditionEntry);
         numberEntry = findViewById(R.id.numberEntry);
@@ -194,7 +186,6 @@ public class AddEditCardActivity extends AppCompatActivity {
             saveCardButton.setText(saveChanges);
 
             nameEntry.setText(data.name);
-            ownerEntry.setText(data.owner);
             roleEntry.setText(data.role);
             conditionEntry.setText(data.condition);
             numberEntry.setText(Integer.toString(data.number));

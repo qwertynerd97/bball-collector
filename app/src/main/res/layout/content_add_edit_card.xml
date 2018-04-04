@@ -107,7 +107,7 @@
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:fontFamily="@font/source_sans_pro"
-                    android:hint="Team"
+                    android:hint="Value"
                     android:inputType="numberDecimal"
                     android:maxLines="1"
                     android:textColor="@android:color/background_dark"
