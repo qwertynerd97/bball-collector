@@ -1,5 +1,6 @@
 package com.example.app.baseballmessenger;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
@@ -9,10 +10,14 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 /*
  *  The Add/Edit Card Activity is responsible both for adding a new card and editing an existing card.
@@ -72,6 +77,20 @@ public class AddEditCardActivity extends AppCompatActivity {
         teamView.setVisibility(visibility);
         valueView.setVisibility(visibility);
         dateView.setVisibility(visibility);
+    }
+
+    protected void fillCardData(Card data)
+    {
+        data.name = nameEntry.getText().toString();
+        data.owner = ownerEntry.getText().toString();
+        data.name = playerEntry.getText().toString();
+        data.role = roleEntry.getText().toString();
+        data.condition = conditionEntry.getText().toString();
+        data.number = Integer.parseInt(numberEntry.getText().toString());
+        data.year = Integer.parseInt(yearEntry.getText().toString());
+        data.team = teamEntry.getText().toString();
+        data.value = Double.parseDouble(valueEntry.getText().toString());
+        data.dateAcquired = dateEntry.getText().toString();
     }
 
     @Override
@@ -191,7 +210,22 @@ public class AddEditCardActivity extends AppCompatActivity {
             // Show the labels if we're in Edit view
             showTextViews(View.VISIBLE);
 
-            // TODO: add listener for the save button
+            // The Save Card button will be triggering an Edit action, not a New Card action.
+            saveCardButton.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View parent) {
+                    // Gather data from the fields and stuff them into the card data
+                    fillCardData(data);
+
+                    // Make the necessary changes in Firebase
+                    data.updateFirebase();
+
+                    // Go to card detail
+                    Intent i=new Intent(AddEditCardActivity.this, CardDetailActivity.class);
+                    i.putExtra("card", data);
+                    i.putExtra("wishlist", isWishlist);
+                    startActivity(i);
+                }
+            });
         }
         else
         {
@@ -200,7 +234,15 @@ public class AddEditCardActivity extends AppCompatActivity {
             // Don't show the labels if we're in Create view
             showTextViews(View.GONE);
 
-            // TODO: add listener for the save button
+            // The Save Card button will be triggereing an Edit action, not a New Card action.
+            saveCardButton.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                    // Go to card list
+                    Intent i=new Intent(AddEditCardActivity.this, CardListActivity.class);
+                    i.putExtra("wishlist", isWishlist);
+                    startActivity(i);
+                }
+            });
         }
     }
 
