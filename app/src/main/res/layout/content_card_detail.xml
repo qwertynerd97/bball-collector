@@ -217,5 +217,26 @@
         app:layout_constraintStart_toEndOf="@+id/dateView"
         app:layout_constraintTop_toBottomOf="@+id/valueView" />
 
+    <Button
+        android:id="@+id/editButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#b3ee01"
+        android:fadingEdge="vertical"
+        android:fontFamily="@font/source_sans_pro_semibold"
+        android:text="Edit Card"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/dateView" />
+
+    <Button
+        android:id="@+id/deleteButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#b3ee01"
+        android:fontFamily="@font/source_sans_pro_semibold"
+        android:text="Delete Card"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editButton" />
+
 
 </android.support.constraint.ConstraintLayout>

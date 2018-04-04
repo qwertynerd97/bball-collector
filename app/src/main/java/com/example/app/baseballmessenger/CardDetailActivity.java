@@ -28,7 +28,7 @@ public class CardDetailActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        data = getIntent().getParcelableExtra("card"); //TODO This is null for some reason... don't know why bc i.putParcelableExtra() is passed a non-null value
+        data = getIntent().getParcelableExtra("card");
 
         TextView cardName = findViewById(R.id.cardName);
         cardName.setText(data.name);
