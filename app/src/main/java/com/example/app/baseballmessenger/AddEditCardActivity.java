@@ -237,6 +237,19 @@ public class AddEditCardActivity extends AppCompatActivity {
             // The Save Card button will be triggereing an Edit action, not a New Card action.
             saveCardButton.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
+                    // Create Card
+                    DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
+                    Card newCard = new Card(ref.push().getKey(), ownerEntry.getText().toString(),
+                            nameEntry.getText().toString(), conditionEntry.getText().toString(),
+                            Integer.parseInt(numberEntry.getText().toString()),
+                            roleEntry.getText().toString(), teamEntry.getText().toString(),
+                            Double.parseDouble(valueEntry.getText().toString()),
+                            Integer.parseInt(yearEntry.getText().toString()),
+                            dateEntry.getText().toString(),
+                            !isWishlist, false);
+                    newCard.updateFirebase();
+
+
                     // Go to card list
                     Intent i=new Intent(AddEditCardActivity.this, CardListActivity.class);
                     i.putExtra("wishlist", isWishlist);
