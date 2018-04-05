@@ -280,5 +280,10 @@ public class Card implements Parcelable{
     public static void deleteCard(String user, boolean inCollection, String uuid){
         DatabaseReference reference = Card.databaseReference(user, inCollection).child(uuid);
         reference.removeValue();
+
+        if(inCollection)
+            Handoff.currentUser.numCollection--;
+        else
+            Handoff.currentUser.numWishlist--;
     }
 }
