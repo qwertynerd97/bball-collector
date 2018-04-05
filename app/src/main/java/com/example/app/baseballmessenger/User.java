@@ -12,8 +12,11 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
 /**
  * User is an encapsulating class that provides access to User data from the Firebase Database.
@@ -260,5 +263,91 @@ public class User implements Parcelable {
      */
     public static DatabaseReference databaseReference(){
         return FirebaseDatabase.getInstance().getReference("users");
+    }
+
+    public static ArrayList<Card> getCollection(String id) {
+        final ArrayList<Card> coll = new ArrayList<>();
+
+        DatabaseReference ref = Card.databaseReference(id, true);
+
+        ref.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                while (dataSnapshot.getChildren().iterator().hasNext()) {
+                    Card c = dataSnapshot.getChildren().iterator().next().getValue(Card.class);
+                    coll.add(c);
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                System.out.println("The read failed: " + databaseError.getCode());
+            }
+        });
+
+        return coll;
+    }
+
+    public static int calcCollectionValue(String id){
+        ArrayList<Card> coll = getCollection(id);
+        int value = 0;
+
+        for (Card c:coll) {
+            value += c.value;
+        }
+
+        return value;
+    }
+
+    public static ArrayList<User> getUsers(){
+        DatabaseReference ref = databaseReference();
+        final ArrayList<User> users = new ArrayList<>();
+
+        ref.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                while (dataSnapshot.getChildren().iterator().hasNext()) {
+                    User u = dataSnapshot.getChildren().iterator().next().getValue(User.class);
+                    users.add(u);
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+        return users;
+    }
+
+    public static SortedSet<String> userSearch(String query){
+        ArrayList<User> users = getUsers();
+        TreeSet<String> set = new TreeSet<>();
+        SortedSet<String> sortedSet;
+        String endquery;
+
+        int len = query.length();
+        char data[] = new char[len];
+        char change;
+
+
+        for (User u:users) {
+            set.add(u.displayName);
+        }
+
+        change = query.charAt(len - 1);
+        change++;
+        data[len - 1] = change;
+
+        for (int i = 0; i < len - 2; i++) {
+            data[i] = query.charAt(i);
+        }
+
+        endquery = new String(data);
+
+        sortedSet = set.subSet(query, endquery);
+
+        return sortedSet;
     }
 }

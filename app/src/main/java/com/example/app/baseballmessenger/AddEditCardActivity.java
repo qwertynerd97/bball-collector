@@ -206,6 +206,9 @@ public class AddEditCardActivity extends AppCompatActivity {
                     // Make the necessary changes in Firebase
                     data.updateFirebase();
 
+                    Handoff.currentUser.value = User.calcCollectionValue(Handoff.currentUser.uuid);
+                    Handoff.currentUser.updateFirebase();
+
                     // Go to card detail
                     Intent i=new Intent(AddEditCardActivity.this, CardDetailActivity.class);
                     i.putExtra("card", data);
@@ -239,6 +242,13 @@ public class AddEditCardActivity extends AppCompatActivity {
                     c.lockstatus = false;
                     c.inCollection = !isWishlist;
                     c.updateFirebase();
+
+                    if (isWishlist)
+                        Handoff.currentUser.numWishlist++;
+                    else
+                        Handoff.currentUser.numCollection++;
+
+                    Handoff.currentUser.updateFirebase();
 
                     // Go to card list
                     Intent i=new Intent(AddEditCardActivity.this, CardListActivity.class);
