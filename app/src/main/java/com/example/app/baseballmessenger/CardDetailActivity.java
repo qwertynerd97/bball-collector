@@ -36,7 +36,7 @@ public class CardDetailActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        data = getIntent().getParcelableExtra("card");
+        data = getIntent().getExtras().getParcelable("card");
 
         TextView cardName = findViewById(R.id.cardName);
         cardName.setText(data.name);
