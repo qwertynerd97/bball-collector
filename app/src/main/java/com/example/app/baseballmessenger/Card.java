@@ -8,6 +8,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.util.HashMap;
 
@@ -71,6 +73,11 @@ public class Card implements Parcelable{
     public boolean lockstatus;
 
     /**
+     * Stores the filename of a card
+     */
+    public String fileName;
+
+    /**
      * The Parcelable Creator, for passing Cards between Activities
      */
     public static final Parcelable.Creator<Card> CREATOR= new Parcelable.Creator<Card>() {
@@ -104,6 +111,7 @@ public class Card implements Parcelable{
         dateAcquired = "0/0/00";
         inCollection = false;
         lockstatus = false;
+        fileName = "cardDefault.jpg";
     }
 
     /**
@@ -112,7 +120,7 @@ public class Card implements Parcelable{
      * @param in The Android Parcel to build the card
      */
     public Card(Parcel in){
-        String[] data= new String[12];
+        String[] data= new String[13];
         in.readStringArray(data);
         uuid = data[0];
         owner = data[1];
@@ -126,6 +134,7 @@ public class Card implements Parcelable{
         dateAcquired = data[9];
         inCollection = Boolean.parseBoolean(data[10]);
         lockstatus = Boolean.parseBoolean(data[11]);
+        fileName = data[12];
     }
 
     /**
@@ -141,7 +150,7 @@ public class Card implements Parcelable{
      * @param year The year the card was released
      * @param date The date the card was acquired
      */
-    public Card(String uuid, String owner, String name, String cond, int num, String role, String team, double val, int year, String date, boolean coll, boolean lock){
+    public Card(String uuid, String owner, String name, String cond, int num, String role, String team, double val, int year, String date, boolean coll, boolean lock, String imageName){
         this.uuid = uuid;
         this.owner = owner;
         this.name = name;
@@ -154,6 +163,7 @@ public class Card implements Parcelable{
         this.dateAcquired = date;
         this.inCollection = coll;
         this.lockstatus = lock;
+        this.fileName = imageName;
     }
 
     /**
@@ -193,6 +203,7 @@ public class Card implements Parcelable{
         this.dateAcquired = other.dateAcquired;
         this.inCollection = other.inCollection;
         this.lockstatus = other.lockstatus;
+        this.fileName = other.fileName;
     }
 
     /**
@@ -204,6 +215,10 @@ public class Card implements Parcelable{
         reference.child("cards").child(owner).child(location).child(uuid).setValue(this);
     }
 
+    /**
+     * Generates a uuid for the card from Firebase
+     * @return a new UUID for the card
+     */
     public String generateUUID()
     {
         String location = (inCollection ? "collection" : "wishlist");
@@ -227,7 +242,7 @@ public class Card implements Parcelable{
      */
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        String[] data = new String[12];
+        String[] data = new String[13];
 
         data[0] = uuid;
         data[1] = owner;
@@ -241,6 +256,7 @@ public class Card implements Parcelable{
         data[9] = dateAcquired;
         data[10] = inCollection + "";
         data[11] = lockstatus + "";
+        data[12] = fileName;
 
         dest.writeStringArray(data);
     }
@@ -285,5 +301,13 @@ public class Card implements Parcelable{
             Handoff.currentUser.numCollection--;
         else
             Handoff.currentUser.numWishlist--;
+    }
+
+    /**
+     * Gets the storage location for this card's image
+     * @return The Firebase Reference for the card's image
+     */
+    public StorageReference imageRef(){
+        return FirebaseStorage.getInstance().getReference().child("cards").child(fileName);
     }
 }

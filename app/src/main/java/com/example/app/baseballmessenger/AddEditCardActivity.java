@@ -284,7 +284,7 @@ public class AddEditCardActivity extends AppCompatActivity {
                     }
                     else {
                         // Create Card
-                        Card c = new Card("", Handoff.currentUser.uuid, "", "", 0, "", "", 0.0, 0, "", true, false);
+                        Card c = new Card("", Handoff.currentUser.uuid, "", "", 0, "", "", 0.0, 0, "", true, false, "defaultCard.jpg");
                         c.uuid = c.generateUUID();
                         c.owner = Handoff.currentUser.uuid;
                         c.condition = conditionEntry.getText().toString();
