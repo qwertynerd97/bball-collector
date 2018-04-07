@@ -44,8 +44,9 @@ public class CardListActivity extends AppCompatActivity {
     private TextView noCardsView;
     private ArrayList<Card> cards = new ArrayList<Card>();
     private FirebaseAuth mAuth;
-    private Context mContext = this;
     private DatabaseReference reference;
+    private Context mContext = this;
+    private String previousActivity = "";
     private Button addCardButton;
 
     private boolean isWishlist;
@@ -67,6 +68,8 @@ public class CardListActivity extends AppCompatActivity {
         {
             isWishlist = savedInstanceState.getBoolean("wishlist");
         }
+
+        previousActivity = getIntent().getStringExtra("previous_activity");
 
         // Set up toolbar and drawer
         toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -111,17 +114,16 @@ public class CardListActivity extends AppCompatActivity {
             setTitle(collectionTitle);
         }
         cardScroll.setEmptyView(noCardsView);
-        adapter = new CardAdapter(CardListActivity.this, R.layout.card_thumbnail, cards);
-        adapter.notifyDataSetChanged();
-        cardScroll.setAdapter(adapter);
+
+        // Set up list of Cards
+        cards = new ArrayList<Card>();
 
         // Set up Firebase
         mAuth = FirebaseAuth.getInstance();
 
-        reference = Card.databaseReference(FirebaseAuth.getInstance().getCurrentUser().getUid(), !isWishlist);
-        Query q = reference.orderByChild("name");
+        reference = Card.databaseReference(Handoff.currentUser.uuid, !isWishlist);
 
-        ChildEventListener userListener = new ChildEventListener() {
+        reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for(DataSnapshot cardSnapshot:dataSnapshot.getChildren())
@@ -132,17 +134,14 @@ public class CardListActivity extends AppCompatActivity {
 
                 adapter = new CardAdapter(CardListActivity.this, R.layout.card_thumbnail, cards);
                 adapter.notifyDataSetChanged();
+                cardScroll.setAdapter(adapter);
             }
 
             @Override
-            public void onChildChanged(DataSnapshot dataSnapshot, String previousChildName) {
-                // Users cannot visibly change while searching
-            }
+            public void onCancelled(DatabaseError databaseError) {
 
-            @Override
-            public void onChildRemoved(DataSnapshot dataSnapshot) {
-                // Users cannot ever be deleted
             }
+        });
 
         // Set up pretty card scroll
 
@@ -157,5 +156,4 @@ public class CardListActivity extends AppCompatActivity {
             }
         });
     }
-
 }

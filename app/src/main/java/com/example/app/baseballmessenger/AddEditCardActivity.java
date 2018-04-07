@@ -9,6 +9,8 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -161,6 +163,7 @@ public class AddEditCardActivity extends AppCompatActivity {
             if(addingCard)
             {
                 setTitle(addCardToWishlistTitle);
+                Handoff.currentUser.numWishlist++;
             }
             else
             {
@@ -172,6 +175,7 @@ public class AddEditCardActivity extends AppCompatActivity {
             if(addingCard)
             {
                 setTitle(addCardToCollectionTitle);
+                Handoff.currentUser.numCollection++;
             }
             else
             {
@@ -179,6 +183,29 @@ public class AddEditCardActivity extends AppCompatActivity {
             }
         }
 
+        // This block deals with the date field in the card
+        dateEntry.addTextChangedListener(new TextWatcher() {
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                // TODO Auto-generated method stub
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                // TODO Auto-generated method stub
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if(s.length() == 2 || s.length() == 5)
+                {
+                    dateEntry.setText(s+"/",TextView.BufferType.EDITABLE);
+                    dateEntry.setSelection(s.length()+1, s.length()+1);
+                }
+            }
+        });
         // If we're editing a card, map the data in the card to the entered fields
         if(data != null)
         {
@@ -224,26 +251,59 @@ public class AddEditCardActivity extends AppCompatActivity {
             // The Save Card button will be triggering an Edit action, not a New Card action.
             saveCardButton.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
-                    // Create Card
-                    Card c = new Card("", Handoff.currentUser.uuid,"","", 0, "", "", 0.0, 0, "", true, false);
-                    c.uuid = c.generateUUID();
-                    c.owner = Handoff.currentUser.uuid;
-                    c.condition = conditionEntry.getText().toString();
-                    c.role = roleEntry.getText().toString();
-                    c.number = Integer.parseInt(numberEntry.getText().toString());
-                    c.dateAcquired = dateEntry.getText().toString();
-                    c.year = Integer.parseInt(yearEntry.getText().toString());
-                    c.team = teamEntry.getText().toString();
-                    c.name = nameEntry.getText().toString();
-                    c.value = Double.parseDouble(valueEntry.getText().toString());
-                    c.lockstatus = false;
-                    c.inCollection = !isWishlist;
-                    c.updateFirebase();
+                    if (conditionEntry.getText().toString().trim().equals(""))
+                    {
+                        conditionEntry.setError("Condition cannot be blank");
+                    }
+                    else if (roleEntry.getText().toString().trim().equals(""))
+                    {
+                        roleEntry.setError("Role cannot be blank");
+                    }
+                    else if (numberEntry.getText().toString().trim().equals(""))
+                    {
+                        numberEntry.setError("Number cannot be blank");
+                    }
+                    else if (dateEntry.getText().toString().trim().equals(""))
+                    {
+                        dateEntry.setError("Date cannot be blank");
+                    }
+                    else if (yearEntry.getText().toString().trim().equals(""))
+                    {
+                        yearEntry.setError("Year cannot be blank");
+                    }
+                    else if(teamEntry.getText().toString().trim().equals(""))
+                    {
+                        teamEntry.setError("Team cannot be blank");
+                    }
+                    else if (nameEntry.getText().toString().trim().equals(""))
+                    {
+                        nameEntry.setError("Name cannot be blank");
+                    }
+                    else if (valueEntry.getText().toString().trim().equals("")) {
+                        valueEntry.setError("Value cannot be blank");
+                    }
+                    else {
+                        // Create Card
+                        Card c = new Card("", Handoff.currentUser.uuid, "", "", 0, "", "", 0.0, 0, "", true, false);
+                        c.uuid = c.generateUUID();
+                        c.owner = Handoff.currentUser.uuid;
+                        c.condition = conditionEntry.getText().toString();
+                        c.role = roleEntry.getText().toString();
+                        c.number = Integer.parseInt(numberEntry.getText().toString());
+                        c.dateAcquired = dateEntry.getText().toString();
+                        c.year = Integer.parseInt(yearEntry.getText().toString());
+                        c.team = teamEntry.getText().toString();
+                        c.name = nameEntry.getText().toString();
+                        c.value = Double.parseDouble(valueEntry.getText().toString());
+                        c.lockstatus = false;
+                        c.inCollection = !isWishlist;
+                        c.updateFirebase();
 
-                    // Go to card list
-                    Intent i=new Intent(AddEditCardActivity.this, CardListActivity.class);
-                    i.putExtra("wishlist", isWishlist);
-                    startActivity(i);
+                        // Go to card list
+                        Intent i = new Intent(AddEditCardActivity.this, CardListActivity.class);
+                        i.putExtra("wishlist", isWishlist);
+                        startActivity(i);
+                    }
                 }
             });
         }
