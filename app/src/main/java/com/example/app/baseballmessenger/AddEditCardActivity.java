@@ -1,7 +1,13 @@
 package com.example.app.baseballmessenger;
 
 import android.content.Intent;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
@@ -17,9 +23,16 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.UploadTask;
+
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 
 /*
  *  The Add/Edit Card Activity is responsible both for adding a new card and editing an existing card.
@@ -62,6 +75,8 @@ public class AddEditCardActivity extends AppCompatActivity {
     private static final String addCardToWishlistTitle = "Add to Wishlist";
     private static final String editCardCollectionTitle = "Edit Collection";
     private static final String editCardWishlistTitle = "Edit Wishlist";
+
+    private final int PICK_IMAGE = 127;
 
     protected void showTextViews(int visibility)
     {
@@ -206,10 +221,37 @@ public class AddEditCardActivity extends AppCompatActivity {
                 }
             }
         });
+        chooseImageButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+                intent.setType("image/*");
+
+                // Do this if you need to be able to open the returned URI as a stream
+                // (for example here to read the image data).
+                intent.addCategory(Intent.CATEGORY_OPENABLE);
+
+                Intent finalIntent = Intent.createChooser(intent, "Select card image");
+
+                startActivityForResult(finalIntent, PICK_IMAGE);
+            }
+        });
+
         // If we're editing a card, map the data in the card to the entered fields
-        if(data != null)
-        {
-            // TODO: fix the image
+        if(data != null) {
+            final long ONE_MEGABYTE = 1024 * 1024;
+            data.imageRef().getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
+                @Override
+                public void onSuccess(byte[] bytes) {
+                    Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+                    image.setImageBitmap(bitmap);
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception exception) {
+                    // Handle any errors
+                }
+            });
             saveCardButton.setText(saveChanges);
 
             nameEntry.setText(data.name);
@@ -241,14 +283,13 @@ public class AddEditCardActivity extends AppCompatActivity {
                 }
             });
         }
-        else
-        {
+        else {
             saveCardButton.setText(saveCard);
 
             // Don't show the labels if we're in Create view
             showTextViews(View.GONE);
 
-            // The Save Card button will be triggering an Edit action, not a New Card action.
+            // The Save Card button will be triggering a New Card action, not an Edit Card action.
             saveCardButton.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
                     if (conditionEntry.getText().toString().trim().equals(""))
@@ -306,6 +347,45 @@ public class AddEditCardActivity extends AppCompatActivity {
                     }
                 }
             });
+        }
+    }
+
+    protected void onActivityResult(int requestCode, int resultCode,
+                                    Intent imageReturnedIntent) {
+        super.onActivityResult(requestCode, resultCode, imageReturnedIntent);
+
+        switch(requestCode) {
+            case PICK_IMAGE: {
+                if (resultCode == RESULT_OK) {
+                    Uri selectedImage = imageReturnedIntent.getData();
+                    try {
+                        Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), selectedImage);
+                        ByteArrayOutputStream buffer = new ByteArrayOutputStream(bitmap.getWidth() * bitmap.getHeight());
+                        bitmap.compress(Bitmap.CompressFormat.PNG, 100, buffer);
+                        byte[] bytes = buffer.toByteArray();
+
+                        final String fileName = selectedImage.getLastPathSegment();
+                        data.fileName = fileName;
+
+                        UploadTask uploadTask = data.imageRef().putBytes(bytes);
+                        uploadTask.addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception exception) {
+                                // Handle unsuccessful uploads
+                            }
+                        }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                            @Override
+                            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                                Toast.makeText(AddEditCardActivity.this, "Sucessfully uploaded image to Firebase!",Toast.LENGTH_LONG);
+                            }
+                        });
+
+                        image.setImageBitmap(bitmap);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
         }
     }
 
