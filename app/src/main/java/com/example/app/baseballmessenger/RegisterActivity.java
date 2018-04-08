@@ -83,10 +83,7 @@ public class RegisterActivity extends AppCompatActivity {
                                     {
                                         // Sign in success, update UI with the signed-in user's information
                                         FirebaseUser currentUser = mAuth.getCurrentUser();
-                                        User newUser = new User(currentUser.getUid(),"",currentUser.getEmail(),0,0,0, "profile01.jpg");
-                                        newUser.chats.put("12345_678910",true);
-                                        newUser.chats.put("the_678910",true);
-                                        newUser.chats.put("to_678910",true);
+                                        User newUser = new User(currentUser.getUid(),"",currentUser.getEmail(),0,0,0, "icon1.png");
                                         newUser.updateFirebase();
                                         Handoff.currentUser = newUser;
                                         sharedPref.edit().putString("user_email",email).putString("user_password",pass).apply();

@@ -203,12 +203,10 @@ public class AddEditCardActivity extends AppCompatActivity {
 
             @Override
             public void afterTextChanged(Editable s) {
-                // TODO Auto-generated method stub
             }
 
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                // TODO Auto-generated method stub
 
             }
 
@@ -325,7 +323,7 @@ public class AddEditCardActivity extends AppCompatActivity {
                     }
                     else {
                         // Create Card
-                        Card c = new Card("", Handoff.currentUser.uuid, "", "", 0, "", "", 0.0, 0, "", true, false, "defaultCard.jpg");
+                        Card c = new Card("", Handoff.currentUser.uuid, "", "", 0, "", "", 0.0, 0, "", true, false, "cardDefault.jpg");
                         c.uuid = c.generateUUID();
                         c.owner = Handoff.currentUser.uuid;
                         c.condition = conditionEntry.getText().toString();

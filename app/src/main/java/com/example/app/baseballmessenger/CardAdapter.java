@@ -36,11 +36,11 @@ public class CardAdapter extends ArrayAdapter {
     public CardAdapter(Context context, int textViewResourceId) {
         super(context, textViewResourceId);
         cards = new ArrayList<Card>();
-        cards.add(new Card("0", "Babe Ruth","tet", "New", 1, "Batter", "Yankees", 100.00, 1963, "2017", false, false, "defaultCard.jpg"));
-        cards.add(new Card("01", "Elli Howard","test", "New", 1, "Batter", "Yankees", 100.00, 1963, "2017", false, false, "defaultCard.jpg"));
-        cards.add(new Card("02", "Blah", "tett","New", 1, "Batter", "Yankees", 100.00, 1963, "2017", false, false, "defaultCard.jpg"));
-        cards.add(new Card("03", "Dummy", "stts","New", 1, "Batter", "Yankees", 100.00, 1963, "2017", false, false, "defaultCard.jpg"));
-        cards.add(new Card("04", "Troy Wildcat", "tse","New", 1, "Batter", "Yankees", 100.00, 1963, "2017", false, false, "defaultCard.jpg"));
+        cards.add(new Card("0", "Babe Ruth","tet", "New", 1, "Batter", "Yankees", 100.00, 1963, "2017", false, false, "cardDefault.jpg"));
+        cards.add(new Card("01", "Elli Howard","test", "New", 1, "Batter", "Yankees", 100.00, 1963, "2017", false, false, "cardDefault.jpg"));
+        cards.add(new Card("02", "Blah", "tett","New", 1, "Batter", "Yankees", 100.00, 1963, "2017", false, false, "cardDefault.jpg"));
+        cards.add(new Card("03", "Dummy", "stts","New", 1, "Batter", "Yankees", 100.00, 1963, "2017", false, false, "cardDefault.jpg"));
+        cards.add(new Card("04", "Troy Wildcat", "tse","New", 1, "Batter", "Yankees", 100.00, 1963, "2017", false, false, "cardDefault.jpg"));
         resourceId = textViewResourceId;
     }
 

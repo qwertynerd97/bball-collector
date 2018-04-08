@@ -33,8 +33,8 @@ public class NewTradeActivity extends AppCompatActivity {
     ListView cardsReceivedList;
     Button proposeTradeButton;
     User selectedUserObj;
-    static Card sentCard = new Card("", "", "", "", 0, "", "", 0.0, 0, "", true, false, "defaultCard.jpg");
-    static Card requestedCard = new Card("", "", "", "", 0, "", "", 0.0, 0, "", true, false, "defaultCard.jpg");
+    static Card sentCard = new Card("", "", "", "", 0, "", "", 0.0, 0, "", true, false, "cardDefault.jpg");
+    static Card requestedCard = new Card("", "", "", "", 0, "", "", 0.0, 0, "", true, false, "cardDefault.jpg");
 
 
     @Override
@@ -82,8 +82,8 @@ public class NewTradeActivity extends AppCompatActivity {
                 Intent i = new Intent(NewTradeActivity.this, SearchUsersActivity.class);
                 i.putExtra("previous_activity", "NewTradeActivity");
                 startActivity(i);
-                sentCard = new Card("", "", "", "", 0, "", "", 0.0, 0, "", true, false, "defaultCard.jpg");
-                requestedCard = new Card("", "", "", "", 0, "", "", 0.0, 0, "", true, false, "defaultCard.jpg");
+                sentCard = new Card("", "", "", "", 0, "", "", 0.0, 0, "", true, false, "cardDefault.jpg");
+                requestedCard = new Card("", "", "", "", 0, "", "", 0.0, 0, "", true, false, "cardDefault.jpg");
             }
         });
 
