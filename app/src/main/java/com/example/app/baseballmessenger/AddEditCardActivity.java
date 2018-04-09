@@ -199,7 +199,13 @@ public class AddEditCardActivity extends AppCompatActivity {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if(s.length() == 2 || s.length() == 5)
+                int counter = 0;
+                for( int i=0; i < s.length(); i++ ) {
+                    if( s.charAt(i) == '/' ) {
+                        counter++;
+                    }
+                }
+                if((s.length() == 2 || s.length() == 5) && (dateEntry.getText().toString().indexOf('/') < 0 || counter < 2 ))
                 {
                     dateEntry.setText(s+"/",TextView.BufferType.EDITABLE);
                     dateEntry.setSelection(s.length()+1, s.length()+1);
@@ -263,9 +269,9 @@ public class AddEditCardActivity extends AppCompatActivity {
                     {
                         numberEntry.setError("Number cannot be blank");
                     }
-                    else if (dateEntry.getText().toString().trim().equals(""))
+                    else if (!dateEntry.getText().toString().matches("^([0-2][0-9]||3[0-1])/(0[0-9]||1[0-2])/([0-9][0-9])?[0-9][0-9]$"))
                     {
-                        dateEntry.setError("Date cannot be blank");
+                        dateEntry.setError("Date is in incorrect format.\nMM/DD/YYYY");
                     }
                     else if (yearEntry.getText().toString().trim().equals(""))
                     {
