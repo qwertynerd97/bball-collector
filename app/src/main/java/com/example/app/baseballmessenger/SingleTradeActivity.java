@@ -9,6 +9,7 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
@@ -149,6 +150,28 @@ public class SingleTradeActivity extends AppCompatActivity {
                 Trade.deleteTrade(t.uuid);
 
                 startActivity(new Intent(SingleTradeActivity.this, TradeListActivity.class));
+            }
+        });
+
+        cardsSentList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent i = new Intent(SingleTradeActivity.this, CardDetailActivity.class);
+                i.putExtra("card", cardRequested);
+                i.putExtra("update_delete_access", false);
+                i.putExtra("trade_view", true);
+                startActivity(i);
+            }
+        });
+
+        cardsReceivedList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent i = new Intent(SingleTradeActivity.this, CardDetailActivity.class);
+                i.putExtra("card", cardSent);
+                i.putExtra("update_delete_access", false);
+                i.putExtra("trade_view", true);
+                startActivity(i);
             }
         });
 

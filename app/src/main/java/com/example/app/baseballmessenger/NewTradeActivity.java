@@ -91,8 +91,9 @@ public class NewTradeActivity extends AppCompatActivity {
             @Override
             public void onClick(View v)
             {
-                Intent i = new Intent(NewTradeActivity.this, SelectCardsActivity.class);
+                Intent i = new Intent(NewTradeActivity.this, CardListActivity.class);
                 i.putExtra("selection_mode", "sent");
+                i.putExtra("previous_activity", "NewTradeActivity");
                 i.putExtra("user", selectedUserObj);
                 startActivity(i);
             }
@@ -102,8 +103,9 @@ public class NewTradeActivity extends AppCompatActivity {
             @Override
             public void onClick(View v)
             {
-                Intent i = new Intent(NewTradeActivity.this, SelectCardsActivity.class);
+                Intent i = new Intent(NewTradeActivity.this, CardListActivity.class);
                 i.putExtra("selection_mode", "requested");
+                i.putExtra("previous_activity", "NewTradeActivity");
                 i.putExtra("user", selectedUserObj);
                 startActivity(i);
             }
