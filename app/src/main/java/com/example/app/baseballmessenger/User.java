@@ -11,6 +11,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -58,11 +60,12 @@ public class User implements Parcelable {
      * with the Firebase JSON format.
      */
     public Map<String, Boolean> trades;
+
+
     /**
-     * The file name of the user's profile image. Profile images are stored in Firebase Storage
-     * at /users/{imagename}
+     * Stores the filename of a user
      */
-    public String imageName;
+    public String fileName;
 
     /**
      * The Parcelable Creator, for passing users between Activities
@@ -94,7 +97,7 @@ public class User implements Parcelable {
         numWishlist = 0;
         chats = new HashMap<>();
         trades = new HashMap<>();
-        imageName = "default";
+        fileName = "icon1.png";
     }
 
     /**
@@ -114,7 +117,7 @@ public class User implements Parcelable {
         numWishlist = Integer.parseInt(data[5]);
         chats = parseMap(data[6]);
         trades = parseMap(data[7]);
-        imageName = data[8];
+        fileName = data[8];
     }
 
     /**
@@ -136,7 +139,7 @@ public class User implements Parcelable {
         numWishlist = wish;
         chats = new HashMap<>();
         trades = new HashMap<>();
-        imageName = pic;
+        fileName = pic;
     }
 
     /**
@@ -169,7 +172,7 @@ public class User implements Parcelable {
         this.numWishlist = other.numWishlist;
         this.chats = other.chats;
         this.trades = other.trades;
-        this.imageName = other.imageName;
+        this.fileName = other.fileName;
     }
 
     /**
@@ -206,7 +209,7 @@ public class User implements Parcelable {
         data[5] = numWishlist + "";
         data[6] = chats.toString();
         data[7] = trades.toString();
-        data[8] = imageName;
+        data[8] = fileName;
 
         dest.writeStringArray(data);
     }
@@ -260,5 +263,13 @@ public class User implements Parcelable {
      */
     public static DatabaseReference databaseReference(){
         return FirebaseDatabase.getInstance().getReference("users");
+    }
+
+    /**
+     * Gets the storage location for this usrs's image
+     * @return The Firebase Reference for the user's image
+     */
+    public StorageReference imageRef(){
+        return FirebaseStorage.getInstance().getReference().child("users").child(fileName);
     }
 }

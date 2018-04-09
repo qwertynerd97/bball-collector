@@ -134,6 +134,13 @@
             android:background="#b3ee01"
             android:fontFamily="@font/source_sans_pro_semibold"
             android:text="Log Out" />
+        <Button
+            android:id="@+id/changeImage"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#b3ee01"
+            android:fontFamily="@font/source_sans_pro_semibold"
+            android:text="Set Profile Image" />
     </LinearLayout>
 
 </android.support.constraint.ConstraintLayout>
