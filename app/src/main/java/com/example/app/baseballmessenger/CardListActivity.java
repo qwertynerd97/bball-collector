@@ -42,6 +42,8 @@ public class CardListActivity extends AppCompatActivity {
     private GridView cardScroll;
     private CardAdapter adapter;
     private TextView noCardsView;
+    private String selection_mode;
+    private User user;
     private ArrayList<Card> cards = new ArrayList<Card>();
     private FirebaseAuth mAuth;
     private DatabaseReference reference;
@@ -70,6 +72,23 @@ public class CardListActivity extends AppCompatActivity {
         }
 
         previousActivity = getIntent().getStringExtra("previous_activity");
+        selection_mode = getIntent().getStringExtra("selection_mode");
+
+        if(previousActivity != null && previousActivity.equals("NewTradeActivity"))
+        {
+            if(selection_mode.equals("sent"))
+            {
+                user = Handoff.currentUser;
+            }
+            else
+            {
+                user = getIntent().getParcelableExtra("user");
+            }
+        }
+        else
+        {
+            user = Handoff.currentUser;
+        }
 
         // Set up toolbar and drawer
         toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -88,6 +107,10 @@ public class CardListActivity extends AppCompatActivity {
 
         // Set up the Add New Card button
         addCardButton = (Button)findViewById(R.id.addCardButton);
+        if(previousActivity != null && previousActivity.equals("NewTradeActivity"))
+        {
+            addCardButton.setVisibility(View.GONE);
+        }
         addCardButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 // Code here executes on main thread after user presses button
@@ -97,8 +120,6 @@ public class CardListActivity extends AppCompatActivity {
                 startActivity(i);
             }
         });
-
-
 
         // Set the thing to show when the GridView is empty
         cardScroll = (GridView) findViewById(R.id.card_scroll);
@@ -121,7 +142,7 @@ public class CardListActivity extends AppCompatActivity {
         // Set up Firebase
         mAuth = FirebaseAuth.getInstance();
 
-        reference = Card.databaseReference(Handoff.currentUser.uuid, !isWishlist);
+        reference = Card.databaseReference(user.uuid, !isWishlist);
 
         reference.addValueEventListener(new ValueEventListener() {
             @Override
@@ -151,6 +172,19 @@ public class CardListActivity extends AppCompatActivity {
                 // Executed when an item on the grid view is clicked
                 Intent i=new Intent(CardListActivity.this, CardDetailActivity.class);
                 i.putExtra("card", cards.get(position));
+
+                if(previousActivity != null && previousActivity.equals("NewTradeActivity"))
+                {
+                    i.putExtra("update_delete_access", false);
+                    i.putExtra("user", getIntent().getExtras().getParcelable("user"));
+                    i.putExtra("selection_mode", selection_mode);
+
+                }
+                else
+                {
+                    i.putExtra("update_delete_access", true);
+                }
+
                 i.putExtra("wishlist", isWishlist);
                 startActivity(i);
             }

@@ -1,5 +1,6 @@
 package com.example.app.baseballmessenger;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -33,6 +34,10 @@ import com.google.firebase.storage.UploadTask;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 
 /*
  *  The Add/Edit Card Activity is responsible both for adding a new card and editing an existing card.
@@ -198,27 +203,23 @@ public class AddEditCardActivity extends AppCompatActivity {
             }
         }
 
-        // This block deals with the date field in the card
-        dateEntry.addTextChangedListener(new TextWatcher() {
-
-            @Override
-            public void afterTextChanged(Editable s) {
-            }
-
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if(s.length() == 2 || s.length() == 5)
-                {
-                    dateEntry.setText(s+"/",TextView.BufferType.EDITABLE);
-                    dateEntry.setSelection(s.length()+1, s.length()+1);
-                }
-            }
-        });
+//        // This block deals with the date field in the card
+//        dateEntry.addTextChangedListener(new TextWatcher() {
+//
+//            @Override
+//            public void afterTextChanged(Editable s) {
+//
+//            }
+//
+//            @Override
+//            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+//
+//            }
+//
+//            @Override
+//            public void onTextChanged(CharSequence s, int start, int before, int count) {
+//            }
+//        });
         chooseImageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -276,6 +277,7 @@ public class AddEditCardActivity extends AppCompatActivity {
                     // Go to card detail
                     Intent i=new Intent(AddEditCardActivity.this, CardDetailActivity.class);
                     i.putExtra("card", data);
+                    i.putExtra("update_delete_access", true);
                     i.putExtra("wishlist", isWishlist);
                     startActivity(i);
                 }
@@ -340,6 +342,7 @@ public class AddEditCardActivity extends AppCompatActivity {
 
                         // Go to card list
                         Intent i = new Intent(AddEditCardActivity.this, CardListActivity.class);
+                        i.putExtra("update_delete_access", true);
                         i.putExtra("wishlist", isWishlist);
                         startActivity(i);
                     }

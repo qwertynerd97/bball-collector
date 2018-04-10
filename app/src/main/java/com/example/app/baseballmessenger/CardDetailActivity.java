@@ -34,6 +34,8 @@ public class CardDetailActivity extends AppCompatActivity {
     private Button editbutton;
     private Button deletebutton;
     private boolean isWishlist;
+    private User user;
+    private String selection_mode;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -44,6 +46,8 @@ public class CardDetailActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         data = getIntent().getExtras().getParcelable("card");
+        user = getIntent().getExtras().getParcelable("user");
+        selection_mode = getIntent().getStringExtra("selection_mode");
 
         final ImageView pic = findViewById(R.id.cardImage);
         final long ONE_MEGABYTE = 1024 * 1024;
@@ -120,61 +124,99 @@ public class CardDetailActivity extends AppCompatActivity {
         // Set up the edit and delete buttons
         editbutton = findViewById(R.id.editCard);
         deletebutton = findViewById(R.id.deleteCard);
-        if(data.lockstatus)
-        {   // If card is in a pending trade, don't allow clicking on the delete or edit buttons
-            editbutton.setEnabled(false);
-            deletebutton.setEnabled(false);
+
+        if(!getIntent().getExtras().getBoolean("update_delete_access"))
+        {
+            if(getIntent().getExtras().getBoolean("trade_view"))
+            {
+                deletebutton.setVisibility(View.GONE);
+                editbutton.setVisibility(View.GONE);
+            }
+            else {
+                deletebutton.setEnabled(false);
+                deletebutton.setVisibility(View.GONE);
+
+                editbutton.setText("Select");
+                if (!data.lockstatus) {
+                    editbutton.setEnabled(true);
+                } else {
+                    editbutton.setEnabled(false);
+                }
+
+                // Repurpose edit button for "select card" button
+                editbutton.setOnClickListener(new View.OnClickListener() {
+                    public void onClick(View v) {
+                        if (selection_mode.equals("sent")) {
+                            Intent i = new Intent(CardDetailActivity.this, NewTradeActivity.class);
+                            i.putExtra("user", user);
+                            NewTradeActivity.sentCard = data;
+                            startActivity(i);
+                        } else {
+                            Intent i = new Intent(CardDetailActivity.this, NewTradeActivity.class);
+                            i.putExtra("user", user);
+                            NewTradeActivity.requestedCard = data;
+                            startActivity(i);
+                        }
+                    }
+                });
+            }
+
         }
-        else
-        {   // We are allowed to touch things, all is fine
-            editbutton.setEnabled(true);
-            deletebutton.setEnabled(true);
+        else {
+            if (data.lockstatus) {   // If card is in a pending trade, don't allow clicking on the delete or edit buttons
+                editbutton.setEnabled(false);
+                deletebutton.setEnabled(false);
+            } else {
+                // We are allowed to touch things, all is fine
+                editbutton.setEnabled(true);
+                deletebutton.setEnabled(true);
 
-            // Add a click listener also
-            editbutton.setOnClickListener(new View.OnClickListener() {
-                public void onClick(View v) {
-                    // Code here executes on main thread after user presses button
-                    Intent i = new Intent(CardDetailActivity.this, AddEditCardActivity.class);
-                    i.putExtra("wishlist", isWishlist);
-                    i.putExtra("add", false);
-                    i.putExtra("card", data);
+                // Add a click listener also
+                editbutton.setOnClickListener(new View.OnClickListener() {
+                    public void onClick(View v) {
+                        // Code here executes on main thread after user presses button
+                        Intent i = new Intent(CardDetailActivity.this, AddEditCardActivity.class);
+                        i.putExtra("wishlist", isWishlist);
+                        i.putExtra("add", false);
+                        i.putExtra("card", data);
 
-                    startActivity(i);
-                }
-            });
+                        startActivity(i);
+                    }
+                });
 
-            deletebutton.setOnClickListener(new View.OnClickListener() {
-                public void onClick(View v) {
-                    AlertDialog alertDialog = new AlertDialog.Builder(CardDetailActivity.this).create();
-                    alertDialog.setTitle("Delete Card?");
-                    alertDialog.setMessage("Are you sure you want to delete this card? This action cannot be undone.");
-                    alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "Delete",
-                            new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int which) {
-                                    // Called when clicking the DELETE button on the modal dialog
-                                    // Dismiss the dialog
-                                    dialog.dismiss();
+                deletebutton.setOnClickListener(new View.OnClickListener() {
+                    public void onClick(View v) {
+                        AlertDialog alertDialog = new AlertDialog.Builder(CardDetailActivity.this).create();
+                        alertDialog.setTitle("Delete Card?");
+                        alertDialog.setMessage("Are you sure you want to delete this card? This action cannot be undone.");
+                        alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "Delete",
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        // Called when clicking the DELETE button on the modal dialog
+                                        // Dismiss the dialog
+                                        dialog.dismiss();
 
-                                    // Tell the card to go away
-                                    Card.deleteCard(data.owner, !isWishlist, data.uuid);
+                                        // Tell the card to go away
+                                        Card.deleteCard(data.owner, !isWishlist, data.uuid);
 
-                                    // Go to the card list activity
-                                    Intent i = new Intent(CardDetailActivity.this, CardListActivity.class);
-                                    i.putExtra("wishlist", isWishlist);
-                                    startActivity(i);
-                                }
-                            });
-                    alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, "Cancel",
-                            new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    // Called when clicking CANCEL on the modal dialog (just dismiss it)
-                                    dialog.dismiss();
-                                }
-                            });
-                    alertDialog.show();
-                }
-            });
+                                        // Go to the card list activity
+                                        Intent i = new Intent(CardDetailActivity.this, CardListActivity.class);
+                                        i.putExtra("wishlist", isWishlist);
+                                        startActivity(i);
+                                    }
+                                });
+                        alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, "Cancel",
+                                new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        // Called when clicking CANCEL on the modal dialog (just dismiss it)
+                                        dialog.dismiss();
+                                    }
+                                });
+                        alertDialog.show();
+                    }
+                });
+            }
         }
     }
 }
