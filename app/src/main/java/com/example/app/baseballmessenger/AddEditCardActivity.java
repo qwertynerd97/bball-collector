@@ -106,6 +106,9 @@ public class AddEditCardActivity extends AppCompatActivity {
         data.team = teamEntry.getText().toString();
         data.value = Double.parseDouble(valueEntry.getText().toString());
         data.dateAcquired = dateEntry.getText().toString();
+
+
+        Handoff.currentUser.value += data.value;
     }
 
     @Override
@@ -262,7 +265,9 @@ public class AddEditCardActivity extends AppCompatActivity {
             valueEntry.setText(Double.toString(data.value));
             dateEntry.setText(data.dateAcquired);
 
-            // Show the labels if we're in Edit view
+            Handoff.currentUser.value -= data.value;
+
+                    // Show the labels if we're in Edit view
             showTextViews(View.VISIBLE);
 
             // The Save Card button will be triggering an Edit action, not a New Card action.
@@ -340,7 +345,10 @@ public class AddEditCardActivity extends AppCompatActivity {
                         c.inCollection = !isWishlist;
                         c.updateFirebase();
 
-                        // Go to card list
+
+                        Handoff.currentUser.value += c.value;
+
+                                // Go to card list
                         Intent i = new Intent(AddEditCardActivity.this, CardListActivity.class);
                         i.putExtra("update_delete_access", true);
                         i.putExtra("wishlist", isWishlist);
