@@ -31,7 +31,7 @@ public class User implements Parcelable {
     /**
      * The name to display on the user's profile, currently not in use
      */
-    public String displayName;
+    private String displayName;
     /**
      * The login email address
      */
