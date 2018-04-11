@@ -37,6 +37,9 @@ public class UserDetailActivity extends AppCompatActivity {
     private final int PICK_IMAGE = 127;
     private ImageView pic;
 
+    private final String MyProfileString = "My Profile";
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -105,6 +108,8 @@ public class UserDetailActivity extends AppCompatActivity {
             tradeButton.setVisibility(View.GONE);
             logoutButton.setVisibility(View.VISIBLE);
             profileImage.setVisibility(View.VISIBLE);
+
+            setTitle(MyProfileString);
         }else{
             collectionButton.setVisibility(View.VISIBLE);
             wishlistButton.setVisibility(View.VISIBLE);
@@ -112,6 +117,13 @@ public class UserDetailActivity extends AppCompatActivity {
             tradeButton.setVisibility(View.VISIBLE);
             logoutButton.setVisibility(View.GONE);
             profileImage.setVisibility(View.GONE);
+
+            if(data.displayName.length() == 0) {   // use email instead of display name
+                setTitle(data.email);
+            }
+            else {
+                setTitle(data.displayName);
+            }
         }
 
         pic = findViewById(R.id.userImage);
