@@ -93,6 +93,11 @@ public class SingleTradeActivity extends AppCompatActivity {
                     public void onCallback(Trade t) {
 
                     }
+
+                    @Override
+                    public void onCallback(User u) {
+
+                    }
                 });
 
 
@@ -108,11 +113,21 @@ public class SingleTradeActivity extends AppCompatActivity {
                     public void onCallback(Trade t) {
 
                     }
+
+                    @Override
+                    public void onCallback(User u) {
+
+                    }
                 });
             }
 
             @Override
             public void onCallback(Card c) {
+
+            }
+
+            @Override
+            public void onCallback(User u) {
 
             }
         });
@@ -148,6 +163,43 @@ public class SingleTradeActivity extends AppCompatActivity {
 
                                     //Deletes trade object in Firebase database
                                     Trade.deleteTrade(t.uuid);
+
+                                    //Update users' total collection value
+                                    User u = new User(t.receivingUser, new MyCallback() {
+                                        @Override
+                                        public void onCallback(Card c) {
+
+                                        }
+
+                                        @Override
+                                        public void onCallback(Trade t) {
+
+                                        }
+
+                                        @Override
+                                        public void onCallback(User u) {
+                                            u.calculateCollectionValue();
+                                            u.updateFirebase();
+                                        }
+                                    });
+
+                                    User u2 = new User(t.requestingUser, new MyCallback() {
+                                        @Override
+                                        public void onCallback(Card c) {
+
+                                        }
+
+                                        @Override
+                                        public void onCallback(Trade t) {
+
+                                        }
+
+                                        @Override
+                                        public void onCallback(User u) {
+                                            u.calculateCollectionValue();
+                                            u.updateFirebase();
+                                        }
+                                    });
 
                                     startActivity(new Intent(SingleTradeActivity.this, TradeListActivity.class));
                                 }

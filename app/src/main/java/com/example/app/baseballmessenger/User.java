@@ -2,6 +2,7 @@ package com.example.app.baseballmessenger;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.provider.ContactsContract;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -14,6 +15,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
+import java.text.ParseException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -60,7 +62,6 @@ public class User implements Parcelable {
      * with the Firebase JSON format.
      */
     public Map<String, Boolean> trades;
-
 
     /**
      * Stores the filename of a user
@@ -146,17 +147,41 @@ public class User implements Parcelable {
      * Get user from database from uuid
      * @param uuid The uuid of the user to retrieve
      */
-    public User(String uuid){
+    public User(String uuid, final MyCallback myCallback){
         DatabaseReference reference = User.databaseReference().child(uuid);
         ValueEventListener userListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 User.this.setValues(dataSnapshot.getValue(User.class));
+                myCallback.onCallback(User.this);
             }
             @Override
             public void onCancelled(DatabaseError databaseError) {}
         };
         reference.addListenerForSingleValueEvent(userListener);
+    }
+
+    public void calculateCollectionValue()
+    {
+        DatabaseReference reference = Card.databaseReference(this.uuid, true);
+        reference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                double totalValue = 0.0;
+                for(DataSnapshot cardSnapshot: dataSnapshot.getChildren())
+                {
+                    Card c = cardSnapshot.getValue(Card.class);
+                    totalValue += c.value;
+                }
+                User.this.value = totalValue;
+                User.this.updateFirebase();
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
 
     /**
@@ -266,7 +291,7 @@ public class User implements Parcelable {
     }
 
     /**
-     * Gets the storage location for this usrs's image
+     * Gets the storage location for this users's image
      * @return The Firebase Reference for the user's image
      */
     public StorageReference imageRef(){

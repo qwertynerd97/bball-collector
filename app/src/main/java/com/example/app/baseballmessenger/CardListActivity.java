@@ -54,7 +54,7 @@ public class CardListActivity extends AppCompatActivity {
     private boolean isWishlist;
     private static final String noCardsInCollectionString = "There are no cards in your collection. Perhaps you would like to add one?";
     private static final String noCardsInWishlistString = "There are no cards in your wishlist. Perhaps you would like to add one?";
-    private static final String wishlistTitle = "My Wishlist";
+    private static final String wishlistTitle = "My Wishlist"; //TODO FOUND IT
     private static final String collectionTitle = "My Collection";
 
     @Override
@@ -85,9 +85,22 @@ public class CardListActivity extends AppCompatActivity {
                 user = getIntent().getParcelableExtra("user");
             }
         }
+        else if(previousActivity != null && previousActivity.equals("UserDetailActivity"))
+        {
+            user = getIntent().getParcelableExtra("user");
+            isWishlist = getIntent().getExtras().getBoolean("isWishlist");
+        }
         else
         {
             user = Handoff.currentUser;
+        }
+
+        System.out.println(user.email);
+
+        //Calculate total value of user's collection
+        if(!isWishlist)
+        {
+            user.calculateCollectionValue();
         }
 
         // Set up toolbar and drawer
@@ -176,12 +189,12 @@ public class CardListActivity extends AppCompatActivity {
                 if(previousActivity != null && previousActivity.equals("NewTradeActivity"))
                 {
                     i.putExtra("update_delete_access", false);
-                    i.putExtra("user", getIntent().getExtras().getParcelable("user"));
+                    i.putExtra("user", user);
                     i.putExtra("selection_mode", selection_mode);
-
                 }
                 else
                 {
+                    i.putExtra("user", user);
                     i.putExtra("update_delete_access", true);
                 }
 
