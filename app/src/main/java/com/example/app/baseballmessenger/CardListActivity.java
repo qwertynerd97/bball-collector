@@ -189,7 +189,7 @@ public class CardListActivity extends AppCompatActivity {
                 if(previousActivity != null && previousActivity.equals("NewTradeActivity"))
                 {
                     i.putExtra("update_delete_access", false);
-                    i.putExtra("user", user);
+                    i.putExtra("user", getIntent().getParcelableExtra("user"));
                     i.putExtra("selection_mode", selection_mode);
                 }
                 else
