@@ -45,6 +45,8 @@ public class SingleChatActivity extends AppCompatActivity{
     private String chat;
     private DrawerLayout drawer;
 
+    private final String chatWithFormat = "Chat with %s";
+
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -61,6 +63,14 @@ public class SingleChatActivity extends AppCompatActivity{
 
         currentUser = Handoff.currentUser;
         chattingWith = getIntent().getParcelableExtra("chattingWith");
+
+        if(chattingWith.displayName.length() == 0) {
+            // Show as email if display name is not set
+            setTitle(String.format(chatWithFormat, chattingWith.email));
+        } else {
+            // Show as display name if it *is* set
+            setTitle(String.format(chatWithFormat, chattingWith.displayName));
+        }
 
         mAuth = FirebaseAuth.getInstance();
         reference = FirebaseDatabase.getInstance().getReference("messages");
