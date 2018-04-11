@@ -54,7 +54,7 @@ public class CardListActivity extends AppCompatActivity {
     private boolean isWishlist;
     private static final String noCardsInCollectionString = "There are no cards in your collection. Perhaps you would like to add one?";
     private static final String noCardsInWishlistString = "There are no cards in your wishlist. Perhaps you would like to add one?";
-    private static final String wishlistTitle = "My Wishlist"; //TODO FOUND IT
+    private static final String wishlistTitle = "My Wishlist"; 
     private static final String collectionTitle = "My Collection";
 
     @Override
