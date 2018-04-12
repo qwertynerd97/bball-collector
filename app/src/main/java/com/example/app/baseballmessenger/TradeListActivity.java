@@ -33,11 +33,14 @@ public class TradeListActivity extends AppCompatActivity {
     ArrayList<String> al = new ArrayList<>();
     HashMap<String, Trade> allTrades = new HashMap<>();
 
+    private final String title = "Trades";
+
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_trades);
+        setTitle(title);
 
         tradesList = (ListView)findViewById(R.id.tradesList);
         noTradesText = (TextView)findViewById(R.id.noTradesText);

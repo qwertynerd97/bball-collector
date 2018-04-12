@@ -32,7 +32,7 @@
         android:layout_marginBottom="10dp"
         android:fontFamily="@font/source_sans_pro"
         android:hint="Email address"
-        android:inputType="text"
+        android:inputType="textEmailAddress"
         android:maxLines="1" />
 
     <EditText
