@@ -64,6 +64,8 @@ public class SearchUsersActivity extends AppCompatActivity{
     private Context mContext = this;
     private String previousActivity = "";
 
+    private final String title = "Search Collectors";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -74,6 +76,7 @@ public class SearchUsersActivity extends AppCompatActivity{
         // Set up toolbar and drawer
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        setTitle(title);
 
         // Set up drawer
         drawer = findViewById(R.id.drawer_layout);

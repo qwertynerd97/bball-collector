@@ -1,5 +1,7 @@
 package com.example.app.baseballmessenger;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.renderscript.Sampler;
@@ -9,6 +11,7 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
@@ -118,22 +121,66 @@ public class SingleTradeActivity extends AppCompatActivity {
             @Override
             public void onClick(View v)
             {
-                //Add cards sent to current user's collection
-                Card.deleteCard(cardSent.owner, true, cardSent.uuid);
-                cardSent.owner = t.requestingUser;
-                cardSent.lockstatus = false;
-                cardSent.updateFirebase();
 
-                //Add cards received to other user's collection
-                Card.deleteCard(cardRequested.owner, true, cardRequested.uuid);
-                cardRequested.owner = t.receivingUser;
-                cardRequested.lockstatus = false;
-                cardRequested.updateFirebase();
+                if(cardRequested.value < cardSent.value)
+                {
+                    AlertDialog alertDialog = new AlertDialog.Builder(SingleTradeActivity.this).create();
+                    alertDialog.setTitle("Unbalanced Trade Warning");
+                    alertDialog.setMessage("Are you sure you want to accept this trade? This action cannot be undone.");
+                    alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "Accept",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    // Called when clicking the Accept button on the modal dialog
+                                    // Dismiss the dialog
+                                    dialog.dismiss();
 
-                //Deletes trade object in Firebase database
-                Trade.deleteTrade(t.uuid);
+                                    //Add cards sent to current user's collection
+                                    Card.deleteCard(cardSent.owner, true, cardSent.uuid);
+                                    cardSent.owner = t.requestingUser;
+                                    cardSent.lockstatus = false;
+                                    cardSent.updateFirebase();
 
-                startActivity(new Intent(SingleTradeActivity.this, TradeListActivity.class));
+                                    //Add cards received to other user's collection
+                                    Card.deleteCard(cardRequested.owner, true, cardRequested.uuid);
+                                    cardRequested.owner = t.receivingUser;
+                                    cardRequested.lockstatus = false;
+                                    cardRequested.updateFirebase();
+
+                                    //Deletes trade object in Firebase database
+                                    Trade.deleteTrade(t.uuid);
+
+                                    startActivity(new Intent(SingleTradeActivity.this, TradeListActivity.class));
+                                }
+                            });
+                    alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, "Cancel",
+                            new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    // Called when clicking CANCEL on the modal dialog (just dismiss it)
+                                    dialog.dismiss();
+                                }
+                            });
+                    alertDialog.show();
+                }
+                else
+                {
+                    //Add cards sent to current user's collection
+                    Card.deleteCard(cardSent.owner, true, cardSent.uuid);
+                    cardSent.owner = t.requestingUser;
+                    cardSent.lockstatus = false;
+                    cardSent.updateFirebase();
+
+                    //Add cards received to other user's collection
+                    Card.deleteCard(cardRequested.owner, true, cardRequested.uuid);
+                    cardRequested.owner = t.receivingUser;
+                    cardRequested.lockstatus = false;
+                    cardRequested.updateFirebase();
+
+                    //Deletes trade object in Firebase database
+                    Trade.deleteTrade(t.uuid);
+
+                    startActivity(new Intent(SingleTradeActivity.this, TradeListActivity.class));
+                }
             }
         });
 
@@ -149,6 +196,28 @@ public class SingleTradeActivity extends AppCompatActivity {
                 Trade.deleteTrade(t.uuid);
 
                 startActivity(new Intent(SingleTradeActivity.this, TradeListActivity.class));
+            }
+        });
+
+        cardsSentList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent i = new Intent(SingleTradeActivity.this, CardDetailActivity.class);
+                i.putExtra("card", cardRequested);
+                i.putExtra("update_delete_access", false);
+                i.putExtra("trade_view", true);
+                startActivity(i);
+            }
+        });
+
+        cardsReceivedList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent i = new Intent(SingleTradeActivity.this, CardDetailActivity.class);
+                i.putExtra("card", cardSent);
+                i.putExtra("update_delete_access", false);
+                i.putExtra("trade_view", true);
+                startActivity(i);
             }
         });
 
