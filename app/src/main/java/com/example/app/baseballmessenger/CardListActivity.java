@@ -11,6 +11,9 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -121,6 +124,8 @@ public class CardListActivity extends AppCompatActivity {
             }
         });
 
+
+
         // Set the thing to show when the GridView is empty
         cardScroll = (GridView) findViewById(R.id.card_scroll);
         noCardsView = (TextView) findViewById(R.id.noCardsText);
@@ -143,15 +148,15 @@ public class CardListActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
 
         reference = Card.databaseReference(user.uuid, !isWishlist);
+        Query q = reference.orderByChild("uuid");
 
-        reference.addValueEventListener(new ValueEventListener() {
+        q.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for(DataSnapshot cardSnapshot:dataSnapshot.getChildren())
                 {
                     cards.add(cardSnapshot.getValue(Card.class));
                 }
-                Log.d("Search Cards","there are " + cards.size());
 
                 adapter = new CardAdapter(CardListActivity.this, R.layout.card_thumbnail, cards);
                 adapter.notifyDataSetChanged();
@@ -189,5 +194,60 @@ public class CardListActivity extends AppCompatActivity {
                 startActivity(i);
             }
         });
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        Query q;
+
+        switch (item.getItemId()) {
+            case R.id.filter_name:
+                q = reference.orderByChild("name");
+                break;
+            case R.id.filter_date:
+                q = reference.orderByChild("year");
+                break;
+            case R.id.filter_team:
+                q = reference.orderByChild("team");
+                break;
+            case R.id.filter_value:
+                q = reference.orderByChild("value");
+                break;
+            case R.id.action_filter:
+                return true;
+            default:
+                q = reference.orderByChild("uuid");
+
+        }
+
+        cards.clear();
+        q.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for(DataSnapshot cardSnapshot:dataSnapshot.getChildren())
+                {
+                    cards.add(cardSnapshot.getValue(Card.class));
+                }
+
+                adapter = new CardAdapter(CardListActivity.this, R.layout.card_thumbnail, cards);
+                adapter.notifyDataSetChanged();
+                cardScroll.setAdapter(adapter);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+        return true;
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu items for use in the action bar
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu, menu);
+        return super.onCreateOptionsMenu(menu);
     }
 }
