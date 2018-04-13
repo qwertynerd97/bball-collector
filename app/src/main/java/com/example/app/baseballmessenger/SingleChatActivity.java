@@ -64,13 +64,7 @@ public class SingleChatActivity extends AppCompatActivity{
         currentUser = Handoff.currentUser;
         chattingWith = getIntent().getParcelableExtra("chattingWith");
 
-        if(chattingWith.displayName.length() == 0) {
-            // Show as email if display name is not set
-            setTitle(String.format(chatWithFormat, chattingWith.email));
-        } else {
-            // Show as display name if it *is* set
-            setTitle(String.format(chatWithFormat, chattingWith.displayName));
-        }
+        setTitle(String.format(chatWithFormat, chattingWith.email));
 
         mAuth = FirebaseAuth.getInstance();
         reference = FirebaseDatabase.getInstance().getReference("messages");
