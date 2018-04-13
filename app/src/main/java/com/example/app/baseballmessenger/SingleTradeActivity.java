@@ -254,22 +254,65 @@ public class SingleTradeActivity extends AppCompatActivity {
         cardsSentList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent i = new Intent(SingleTradeActivity.this, CardDetailActivity.class);
-                i.putExtra("card", cardRequested);
-                i.putExtra("update_delete_access", false);
-                i.putExtra("trade_view", true);
-                startActivity(i);
+
+
+
+                User u = new User(t.receivingUser, new MyCallback() {
+                    @Override
+                    public void onCallback(Card c) {
+
+                    }
+
+                    @Override
+                    public void onCallback(Trade t) {
+
+                    }
+
+                    @Override
+                    public void onCallback(User u) {
+                        u.calculateCollectionValue();
+                        u.updateFirebase();
+                        //TODO NEED TO PUT USER IN EXTRAS IN HERE
+                        Intent i = new Intent(SingleTradeActivity.this, CardDetailActivity.class);
+                        i.putExtra("card", cardRequested);
+                        i.putExtra("update_delete_access", false);
+                        i.putExtra("trade_view", true);
+                        i.putExtra("user", u);
+                        startActivity(i);
+                    }
+                });
             }
         });
 
         cardsReceivedList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent i = new Intent(SingleTradeActivity.this, CardDetailActivity.class);
-                i.putExtra("card", cardSent);
-                i.putExtra("update_delete_access", false);
-                i.putExtra("trade_view", true);
-                startActivity(i);
+
+                User u = new User(t.receivingUser, new MyCallback() {
+                    @Override
+                    public void onCallback(Card c) {
+
+                    }
+
+                    @Override
+                    public void onCallback(Trade t) {
+
+                    }
+
+                    @Override
+                    public void onCallback(User u) {
+                        u.calculateCollectionValue();
+                        u.updateFirebase();
+                        //TODO NEED TO PUT USER IN EXTRAS IN HERE
+                        Intent i = new Intent(SingleTradeActivity.this, CardDetailActivity.class);
+                        i.putExtra("card", cardSent);
+                        i.putExtra("update_delete_access", false);
+                        i.putExtra("user", u);
+                        i.putExtra("trade_view", true);
+                        startActivity(i);
+                    }
+                });
+
             }
         });
 

@@ -187,6 +187,7 @@ public class AddEditCardActivity extends AppCompatActivity {
             {
                 setTitle(addCardToWishlistTitle);
                 Handoff.currentUser.numWishlist++;
+                Handoff.currentUser.updateFirebase();
             }
             else
             {
@@ -199,6 +200,7 @@ public class AddEditCardActivity extends AppCompatActivity {
             {
                 setTitle(addCardToCollectionTitle);
                 Handoff.currentUser.numCollection++;
+                Handoff.currentUser.updateFirebase();
             }
             else
             {
@@ -289,6 +291,7 @@ public class AddEditCardActivity extends AppCompatActivity {
             });
         }
         else {
+            data = new Card();
             saveCardButton.setText(saveCard);
 
             // Don't show the labels if we're in Create view
@@ -330,23 +333,22 @@ public class AddEditCardActivity extends AppCompatActivity {
                     }
                     else {
                         // Create Card
-                        Card c = new Card("", Handoff.currentUser.uuid, "", "", 0, "", "", 0.0, 0, "", true, false, "cardDefault.jpg");
-                        c.uuid = c.generateUUID();
-                        c.owner = Handoff.currentUser.uuid;
-                        c.condition = conditionEntry.getText().toString();
-                        c.role = roleEntry.getText().toString();
-                        c.number = Integer.parseInt(numberEntry.getText().toString());
-                        c.dateAcquired = dateEntry.getText().toString();
-                        c.year = Integer.parseInt(yearEntry.getText().toString());
-                        c.team = teamEntry.getText().toString();
-                        c.name = nameEntry.getText().toString();
-                        c.value = Double.parseDouble(valueEntry.getText().toString());
-                        c.lockstatus = false;
-                        c.inCollection = !isWishlist;
-                        c.updateFirebase();
+                        data.uuid = data.generateUUID();
+                        data.owner = Handoff.currentUser.uuid;
+                        data.condition = conditionEntry.getText().toString();
+                        data.role = roleEntry.getText().toString();
+                        data.number = Integer.parseInt(numberEntry.getText().toString());
+                        data.dateAcquired = dateEntry.getText().toString();
+                        data.year = Integer.parseInt(yearEntry.getText().toString());
+                        data.team = teamEntry.getText().toString();
+                        data.name = nameEntry.getText().toString();
+                        data.value = Double.parseDouble(valueEntry.getText().toString());
+                        data.lockstatus = false;
+                        data.inCollection = !isWishlist;
+                        data.updateFirebase();
 
 
-                        Handoff.currentUser.value += c.value;
+                        Handoff.currentUser.value += data.value;
 
                                 // Go to card list
                         Intent i = new Intent(AddEditCardActivity.this, CardListActivity.class);

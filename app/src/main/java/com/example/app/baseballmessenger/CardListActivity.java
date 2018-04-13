@@ -123,10 +123,11 @@ public class CardListActivity extends AppCompatActivity {
 
         // Set up the Add New Card button
         addCardButton = (Button)findViewById(R.id.addCardButton);
-        if(previousActivity != null && previousActivity.equals("NewTradeActivity"))
+        if(previousActivity != null && previousActivity.equals("NewTradeActivity") || !user.uuid.equals(Handoff.currentUser.uuid))
         {
             addCardButton.setVisibility(View.GONE);
         }
+
         addCardButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 // Code here executes on main thread after user presses button

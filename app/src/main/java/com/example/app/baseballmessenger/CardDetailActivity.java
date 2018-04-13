@@ -74,6 +74,10 @@ public class CardDetailActivity extends AppCompatActivity {
         TextView ownerHeader = findViewById(R.id.ownerView);
         owner.setText(data.owner + "");
 
+        // Set up the edit and delete buttons
+        editbutton = findViewById(R.id.editCard);
+        deletebutton = findViewById(R.id.deleteCard);
+
         if(data.owner.equals(Handoff.currentUser.uuid))
         {
             String location = data.inCollection ? "your collection.":"your wishlist.";
@@ -83,6 +87,8 @@ public class CardDetailActivity extends AppCompatActivity {
         else
         {
             owner.setText(user.email);
+            editbutton.setVisibility(View.GONE);
+            deletebutton.setVisibility(View.GONE);
         }
 
         TextView condition = findViewById(R.id.condition);
@@ -124,9 +130,6 @@ public class CardDetailActivity extends AppCompatActivity {
             isWishlist = savedInstanceState.getBoolean("wishlist");
         }
 
-        // Set up the edit and delete buttons
-        editbutton = findViewById(R.id.editCard);
-        deletebutton = findViewById(R.id.deleteCard);
 
         if(!getIntent().getExtras().getBoolean("update_delete_access"))
         {
@@ -138,7 +141,7 @@ public class CardDetailActivity extends AppCompatActivity {
             else {
                 deletebutton.setEnabled(false);
                 deletebutton.setVisibility(View.GONE);
-
+                editbutton.setVisibility(View.VISIBLE);
                 editbutton.setText("Select");
                 if (!data.lockstatus) {
                     editbutton.setEnabled(true);
@@ -201,6 +204,17 @@ public class CardDetailActivity extends AppCompatActivity {
 
                                         // Tell the card to go away
                                         Card.deleteCard(data.owner, !isWishlist, data.uuid);
+
+                                        if(isWishlist)
+                                        {
+                                            user.numWishlist--;
+                                            user.updateFirebase();
+                                        }
+                                        else
+                                        {
+                                            user.numCollection--;
+                                            user.updateFirebase();
+                                        }
 
                                         // Go to the card list activity
                                         Intent i = new Intent(CardDetailActivity.this, CardListActivity.class);
