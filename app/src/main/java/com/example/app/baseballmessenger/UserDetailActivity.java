@@ -118,12 +118,7 @@ public class UserDetailActivity extends AppCompatActivity {
             logoutButton.setVisibility(View.GONE);
             profileImage.setVisibility(View.GONE);
 
-            if(data.displayName.length() == 0) {   // use email instead of display name
-                setTitle(data.email);
-            }
-            else {
-                setTitle(data.displayName);
-            }
+            setTitle(data.email);
         }
 
         pic = findViewById(R.id.userImage);
