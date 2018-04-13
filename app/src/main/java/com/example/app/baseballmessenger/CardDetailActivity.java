@@ -79,7 +79,10 @@ public class CardDetailActivity extends AppCompatActivity {
             String location = data.inCollection ? "your collection.":"your wishlist.";
             owner.setVisibility(View.GONE);
             ownerHeader.setText("This card is currently in " + location);
-
+        }
+        else
+        {
+            owner.setText(user.email);
         }
 
         TextView condition = findViewById(R.id.condition);

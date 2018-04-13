@@ -1,5 +1,6 @@
 package com.example.app.baseballmessenger;
 
+import android.app.ProgressDialog;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
@@ -8,6 +9,8 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.content.Intent;
 import android.widget.Button;
@@ -29,6 +32,7 @@ public class LoginActivity extends AppCompatActivity {
     Button loginButton;
     String email, pass;
     FirebaseAuth mAuth;
+    RelativeLayout progressBar;
 
 
     @Override
@@ -42,7 +46,9 @@ public class LoginActivity extends AppCompatActivity {
         emailAddress = (EditText) findViewById(R.id.email_address);
         password = (EditText) findViewById(R.id.password);
         loginButton = (Button) findViewById(R.id.loginButton);
+        progressBar = (RelativeLayout) findViewById(R.id.auto_login_dialog);
 
+        progressBar.setVisibility(View.GONE);
 
         registerUser.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -108,6 +114,7 @@ public class LoginActivity extends AppCompatActivity {
         String password = sharedPref.getString("user_password", "areallydummypassword");
 
         if(!mail.equals("dummyuser@gmail.com")) {
+            progressBar.setVisibility(View.VISIBLE);
             mAuth.signInWithEmailAndPassword(mail, password)
                     .addOnCompleteListener(LoginActivity.this, new OnCompleteListener<AuthResult>() {
                         @Override
@@ -126,10 +133,11 @@ public class LoginActivity extends AppCompatActivity {
 
                                     }
                                 });
-                                //UserDetails.currentUser = mAuth.getCurrentUser(); //Store current user data (Uid, email address, etc.)
+                                progressBar.setVisibility(View.GONE);
                                 startActivity(new Intent(LoginActivity.this, SearchUsersActivity.class));
                             } else {
                                 Log.d("Error Result", "Auth failed");
+                                progressBar.setVisibility(View.GONE);
                                 Toast.makeText(LoginActivity.this, "Authentication failed.",
                                         Toast.LENGTH_LONG).show();
                             }

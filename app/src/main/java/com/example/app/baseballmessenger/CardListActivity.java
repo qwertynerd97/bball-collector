@@ -88,9 +88,22 @@ public class CardListActivity extends AppCompatActivity {
                 user = getIntent().getParcelableExtra("user");
             }
         }
+        else if(previousActivity != null && previousActivity.equals("UserDetailActivity"))
+        {
+            user = getIntent().getParcelableExtra("user");
+            isWishlist = getIntent().getExtras().getBoolean("isWishlist");
+        }
         else
         {
             user = Handoff.currentUser;
+        }
+
+        System.out.println(user.email);
+
+        //Calculate total value of user's collection
+        if(!isWishlist)
+        {
+            user.calculateCollectionValue();
         }
 
         // Set up toolbar and drawer
@@ -181,12 +194,12 @@ public class CardListActivity extends AppCompatActivity {
                 if(previousActivity != null && previousActivity.equals("NewTradeActivity"))
                 {
                     i.putExtra("update_delete_access", false);
-                    i.putExtra("user", getIntent().getExtras().getParcelable("user"));
+                    i.putExtra("user", getIntent().getParcelableExtra("user"));
                     i.putExtra("selection_mode", selection_mode);
-
                 }
                 else
                 {
+                    i.putExtra("user", user);
                     i.putExtra("update_delete_access", true);
                 }
 

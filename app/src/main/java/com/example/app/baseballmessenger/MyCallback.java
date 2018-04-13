@@ -8,4 +8,5 @@ public interface MyCallback
 {
     void onCallback(Card c);
     void onCallback(Trade t);
+    void onCallback(User u);
 }

@@ -47,18 +47,28 @@ public class UserDetailActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        data = getIntent().getParcelableExtra("user");
+
         Button collectionButton = findViewById(R.id.collectionButton);
         collectionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Intent i=new Intent(UserDetailActivity.this, CardListActivity.class);
+                i.putExtra("user", data);
+                i.putExtra("previous_activity", "UserDetailActivity");
+                i.putExtra("isWishlist", false);
+                startActivity(i);
             }
         });
         Button wishlistButton = findViewById(R.id.wishlistButton);
         wishlistButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Intent i=new Intent(UserDetailActivity.this,CardListActivity.class);
+                i.putExtra("previous_activity", "UserDetailActivity");
+                i.putExtra("isWishlist", true);
+                i.putExtra("user", data);
+                startActivity(i);
             }
         });
         Button chatButton = findViewById(R.id.chatButton);
@@ -93,8 +103,6 @@ public class UserDetailActivity extends AppCompatActivity {
         });
 
         Button profileImage = findViewById(R.id.changeImage);
-
-        data = getIntent().getParcelableExtra("user");
 
         Log.d("User Detail",Handoff.currentUser + "");
         Log.d("User Detail",data.toString());
